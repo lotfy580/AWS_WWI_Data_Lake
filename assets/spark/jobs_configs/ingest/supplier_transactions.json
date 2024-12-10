@@ -1,0 +1,121 @@
+{
+    "data_location": "s3://devwwidatalakehouse/wwi_landing/wwi_cdc.purchasing.suppliertransactions",
+    "iceberg_raw_table": "wwi_raw.supplier_transactions",
+    "iceberg_validated_table": "wwi_validated.supplier_transactions",
+    "DQ_output_location": "s3://devwwidatalakehouse/Deequ_checks",
+    "id_cols": [
+        "supplier_transaction_id"
+    ],
+    "columns_mapping": [
+        {
+            "source_column_name": "suppliertransactionid",
+            "target_column_name": "supplier_transaction_id",
+            "data_type": "int",
+            "nullable": "false"
+        },
+        {
+            "source_column_name": "supplierid",
+            "target_column_name": "supplier_id",
+            "data_type": "int",
+            "nullable": "false"
+        },
+        {
+            "source_column_name": "transactiontypeid",
+            "target_column_name": "transaction_type_id",
+            "data_type": "int",
+            "nullable": "false"
+        },
+        {
+            "source_column_name": "purchaseorderid",
+            "target_column_name": "purchase_order_id",
+            "data_type": "int",
+            "nullable": "true"
+        },
+        {
+            "source_column_name": "paymentmethodid",
+            "target_column_name": "payment_method_id",
+            "data_type": "int",
+            "nullable": "true"
+        },
+        {
+            "source_column_name": "supplierinvoicenumber",
+            "target_column_name": "supplier_invoice_number",
+            "data_type": "string",
+            "nullable": "true"
+        },
+        {
+            "source_column_name": "transactiondate",
+            "target_column_name": "transaction_date",
+            "data_type": "date",
+            "nullable": "false"
+        },
+        {
+            "source_column_name": "amountexcludingtax",
+            "target_column_name": "amount_excluding_tax",
+            "data_type": "decimal(18, 3)",
+            "nullable": "false"
+        },
+        {
+            "source_column_name": "taxamount",
+            "target_column_name": "tax_amount",
+            "data_type": "decimal(18, 3)",
+            "nullable": "false"
+        },
+        {
+            "source_column_name": "transactionamount",
+            "target_column_name": "transaction_amount",
+            "data_type": "decimal(18, 3)",
+            "nullable": "false"
+        },
+        {
+            "source_column_name": "outstandingbalance",
+            "target_column_name": "outstanding_balance",
+            "data_type": "decimal(18, 3)",
+            "nullable": "false"
+        },
+        {
+            "source_column_name": "finalizationdate",
+            "target_column_name": "finalization_date",
+            "data_type": "date",
+            "nullable": "true"
+        },
+        {
+            "source_column_name": "isfinalized",
+            "target_column_name": "is_finalized",
+            "data_type": "boolean",
+            "nullable": "true"
+        },
+        {
+            "source_column_name": "lasteditedby",
+            "target_column_name": "last_edited_by",
+            "data_type": "int",
+            "nullable": "false"
+        },
+        {
+            "source_column_name": "lasteditedwhen",
+            "target_column_name": "last_edited_when",
+            "data_type": "timestamp",
+            "nullable": "false"
+        }
+    ],
+    "quality_checks": [
+        {
+            "column": "supplier_transaction_id",
+            "type": "is_unique",
+            "assertion": "none",
+            "status": "error"
+        },
+        {
+            "column": "supplier_id",
+            "type": "is_complete",
+            "assertion": "none",
+            "status": "error"
+        },
+        {
+            "column": "transaction_type_id",
+            "type": "is_complete",
+            "assertion": "none",
+            "status": "error"
+        }
+    ]
+}

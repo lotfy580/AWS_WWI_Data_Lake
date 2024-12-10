@@ -1,0 +1,121 @@
+{
+    "data_location": "s3://devwwidatalakehouse/wwi_landing/wwi_cdc.sales.orderlines",
+    "iceberg_raw_table": "wwi_raw.order_lines",
+    "iceberg_validated_table": "wwi_validated.order_lines",
+    "DQ_output_location": "s3://devwwidatalakehouse/Deequ_checks",
+    "id_cols": [
+        "order_line_id"
+    ],
+    "columns_mapping": [
+        {
+            "source_column_name": "orderlineid",
+            "target_column_name": "order_line_id",
+            "data_type": "int",
+            "nullable": "false"
+        },
+        {
+            "source_column_name": "orderid",
+            "target_column_name": "order_id",
+            "data_type": "int",
+            "nullable": "false"
+        },
+        {
+            "source_column_name": "stockitemid",
+            "target_column_name": "stock_item_id",
+            "data_type": "int",
+            "nullable": "false"
+        },
+        {
+            "source_column_name": "description",
+            "target_column_name": "description",
+            "data_type": "string",
+            "nullable": "false"
+        },
+        {
+            "source_column_name": "packagetypeid",
+            "target_column_name": "package_type_id",
+            "data_type": "int",
+            "nullable": "false"
+        },
+        {
+            "source_column_name": "quantity",
+            "target_column_name": "quantity",
+            "data_type": "int",
+            "nullable": "false"
+        },
+        {
+            "source_column_name": "unitprice",
+            "target_column_name": "unit_price",
+            "data_type": "decimal(18, 3)",
+            "nullable": "true"
+        },
+        {
+            "source_column_name": "taxrate",
+            "target_column_name": "tax_rate",
+            "data_type": "decimal(18, 3)",
+            "nullable": "false"
+        },
+        {
+            "source_column_name": "pickedquantity",
+            "target_column_name": "picked_quantity",
+            "data_type": "int",
+            "nullable": "false"
+        },
+        {
+            "source_column_name": "pickingcompletedwhen",
+            "target_column_name": "picking_completed_when",
+            "data_type": "timestamp",
+            "nullable": "true"
+        },
+        {
+            "source_column_name": "lasteditedby",
+            "target_column_name": "last_edited_by",
+            "data_type": "int",
+            "nullable": "false"
+        },
+        {
+            "source_column_name": "lasteditedwhen",
+            "target_column_name": "last_edited_when",
+            "data_type": "timestamp",
+            "nullable": "false"
+        }
+    ],
+    "quality_checks": [
+        {
+            "column": "order_line_id",
+            "type": "is_unique",
+            "assertion": "none",
+            "status": "error"
+        },
+        {
+            "column": "order_id",
+            "type": "is_complete",
+            "assertion": "none",
+            "status": "error"
+        },
+        {
+            "column": "stock_item_id",
+            "type": "is_complete",
+            "assertion": "none",
+            "status": "error"
+        },
+        {
+            "column": "quantity",
+            "type": "has_min",
+            "assertion": "lambda x: x >= 1",
+            "status": "error"
+        },
+        {
+            "column": "unit_price",
+            "type": "has_max",
+            "assertion": "lambda x: x <= 2000.00",
+            "status": "error"
+        },
+        {
+            "column": "tax_rate",
+            "type": "has_max",
+            "assertion": "lambda x: x <= 15.00",
+            "status": "error"
+        }
+    ]
+}

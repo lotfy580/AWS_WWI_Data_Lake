@@ -1,0 +1,55 @@
+{
+    "data_location": "s3://devwwidatalakehouse/wwi_landing/wwi_cdc.application.paymentmethods",
+    "iceberg_raw_table": "wwi_raw.payment_methods",
+    "iceberg_validated_table": "wwi_validated.payment_methods",
+    "DQ_output_location": "s3://devwwidatalakehouse/Deequ_checks",
+    "id_cols": [
+        "payment_method_id"
+    ],
+    "columns_mapping": [
+        {
+            "source_column_name": "paymentmethodid",
+            "target_column_name": "payment_method_id",
+            "data_type": "int",
+            "nullable": "false"
+        },
+        {
+            "source_column_name": "paymentmethodname",
+            "target_column_name": "payment_method_name",
+            "data_type": "string",
+            "nullable": "false"
+        },
+        {
+            "source_column_name": "lasteditedby",
+            "target_column_name": "last_edited_by",
+            "data_type": "int",
+            "nullable": "true"
+        },
+        {
+            "source_column_name": "validfrom",
+            "target_column_name": "valid_from",
+            "data_type": "timestamp",
+            "nullable": "true"
+        },
+        {
+            "source_column_name": "validto",
+            "target_column_name": "valid_to",
+            "data_type": "timestamp",
+            "nullable": "true"
+        }
+    ],
+    "quality_checks": [
+        {
+            "column": "payment_method_id",
+            "type": "is_unique",
+            "assertion": "none",
+            "status": "error"
+        },
+        {
+            "column": "payment_method_name",
+            "type": "is_name",
+            "assertion": "none",
+            "status": "warning"
+        }
+    ]
+}

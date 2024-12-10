@@ -1,0 +1,97 @@
+{
+    "data_location": "s3://devwwidatalakehouse/wwi_landing/wwi_cdc.purchasing.purchaseorders",
+    "iceberg_raw_table": "wwi_raw.purchase_orders",
+    "iceberg_validated_table": "wwi_validated.purchase_orders",
+    "DQ_output_location": "s3://devwwidatalakehouse/Deequ_checks",
+    "id_cols": [
+        "purchase_order_id"
+    ],
+    "columns_mapping": [
+        {
+            "source_column_name": "purchaseorderid",
+            "target_column_name": "purchase_order_id",
+            "data_type": "int",
+            "nullable": "false"
+        },
+        {
+            "source_column_name": "supplierid",
+            "target_column_name": "supplier_id",
+            "data_type": "int",
+            "nullable": "false"
+        },
+        {
+            "source_column_name": "orderdate",
+            "target_column_name": "order_date",
+            "data_type": "date",
+            "nullable": "false"
+        },
+        {
+            "source_column_name": "deliverymethodid",
+            "target_column_name": "delivery_method_id",
+            "data_type": "int",
+            "nullable": "false"
+        },
+        {
+            "source_column_name": "contactpersonid",
+            "target_column_name": "contactPerson_id",
+            "data_type": "int",
+            "nullable": "false"
+        },
+        {
+            "source_column_name": "expecteddeliverydate",
+            "target_column_name": "expected_delivery_date",
+            "data_type": "date",
+            "nullable": "true"
+        },
+        {
+            "source_column_name": "supplierreference",
+            "target_column_name": "supplier_reference",
+            "data_type": "string",
+            "nullable": "true"
+        },
+        {
+            "source_column_name": "isorderfinalized",
+            "target_column_name": "is_order_finalized",
+            "data_type": "boolean",
+            "nullable": "false"
+        },
+        {
+            "source_column_name": "comments",
+            "target_column_name": "comments",
+            "data_type": "string",
+            "nullable": "true"
+        },
+        {
+            "source_column_name": "internalcomments",
+            "target_column_name": "internal_comments",
+            "data_type": "string",
+            "nullable": "true"
+        },
+        {
+            "source_column_name": "lasteditedby",
+            "target_column_name": "last_edited_by",
+            "data_type": "int",
+            "nullable": "false"
+        },
+        {
+            "source_column_name": "lasteditedwhen",
+            "target_column_name": "last_edited_when",
+            "data_type": "timestamp",
+            "nullable": "false"
+        }
+    ],
+    "quality_checks": [
+        {
+            "column": "purchase_order_id",
+            "type": "is_unique",
+            "assertion": "none",
+            "status": "error"
+        },
+        {
+            "column": "supplier_id",
+            "type": "is_complete",
+            "assertion": "none",
+            "status": "error"
+        }
+    ]
+}

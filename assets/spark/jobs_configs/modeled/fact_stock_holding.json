@@ -1,0 +1,78 @@
+{
+    "fact_table": "wwi_dwh.fact_stock_holdings",
+    "DQ_output_URL": "s3://devwwidatalakehouse/Deequ_checks/DWH/fact_stock_holdings",
+    "surrogate_key": "stock_holding_key",
+    "natural_keys": ["stock_item_key"],
+    "source_tables" : [
+        "wwi_validated.stock_item_holdings", "wwi_dwh.dim_stock_item"
+    ],
+    "joins": [
+        {
+            "with": "wwi_dwh.dim_stock_item",
+            "alias": "stock_item",
+            "broadcast":"true",
+            "join_condition":"stock_item_holdings.stock_item_id = stock_item.stock_item_id AND stock_item.is_current = 1",
+            "join_type": "left"
+        }
+    ],
+    "filter": "none",
+    "columns": [
+        {
+            "name": "stock_item_key",
+            "source": "stock_item.stock_item_key",
+            "datatype": "int",
+            "transform": "none"
+        },
+        {
+            "name": "quantity_on_hand",
+            "source": "stock_item_holdings.quantity_on_hand",
+            "datatype": "int",
+            "transform": "none"
+        },
+        {
+            "name": "bin_location",
+            "source": "stock_item_holdings.bin_location",
+            "datatype": "string",
+            "transform": "none"
+        },
+        {
+            "name": "last_stocktake_quantity",
+            "source": "stock_item_holdings.last_stock_take_quantity",
+            "datatype": "int",
+            "transform": "none"
+        },
+        {
+            "name": "last_cost_price",
+            "source": "stock_item_holdings.last_cost_price",
+            "datatype": "decimal(18, 2)",
+            "transform": "none"
+        },
+        {
+            "name": "reorder_level",
+            "source": "stock_item_holdings.reorder_level",
+            "datatype": "int",
+            "transform": "none"
+        },
+        {
+            "name": "target_stock_level",
+            "source": "stock_item_holdings.target_stock_level",
+            "datatype": "int",
+            "transform": "none"
+        }
+    ],
+    "quality_checks": [
+        {
+            "column": "last_stocktake_quantity",
+            "type": "has_min",
+            "assertion": "lambda x: x > 0",
+            "status": "error"
+        },
+        {
+            "column": "last_stocktake_quantity",
+            "type": "has_max",
+            "assertion": "lambda x: x < 2e6",
+            "status": "error"
+        }
+    ]
+    
+}

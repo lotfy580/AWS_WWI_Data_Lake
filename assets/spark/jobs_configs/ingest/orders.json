@@ -1,0 +1,127 @@
+{
+    "data_location": "s3://devwwidatalakehouse/wwi_landing/wwi_cdc.sales.orders",
+    "iceberg_raw_table": "wwi_raw.orders",
+    "iceberg_validated_table": "wwi_validated.orders",
+    "DQ_output_location": "s3://devwwidatalakehouse/Deequ_checks",
+    "id_cols": [
+        "order_id"
+    ],
+    "columns_mapping": [
+        {
+            "source_column_name": "orderid",
+            "target_column_name": "order_id",
+            "data_type": "int",
+            "nullable": "false"
+        },
+        {
+            "source_column_name": "customerid",
+            "target_column_name": "customer_id",
+            "data_type": "int",
+            "nullable": "false"
+        },
+        {
+            "source_column_name": "salespersonpersonid",
+            "target_column_name": "salesperson_person_id",
+            "data_type": "int",
+            "nullable": "false"
+        },
+        {
+            "source_column_name": "pickedbypersonid",
+            "target_column_name": "picked_by_person_id",
+            "data_type": "int",
+            "nullable": "true"
+        },
+        {
+            "source_column_name": "contactpersonid",
+            "target_column_name": "contact_person_id",
+            "data_type": "int",
+            "nullable": "false"
+        },
+        {
+            "source_column_name": "backorderorderid",
+            "target_column_name": "backorder_order_id",
+            "data_type": "int",
+            "nullable": "true"
+        },
+        {
+            "source_column_name": "orderdate",
+            "target_column_name": "order_date",
+            "data_type": "date",
+            "nullable": "false"
+        },
+        {
+            "source_column_name": "expecteddeliverydate",
+            "target_column_name": "expected_delivery_date",
+            "data_type": "date",
+            "nullable": "false"
+        },
+        {
+            "source_column_name": "customerpurchaseordernumber",
+            "target_column_name": "customer_purchase_order_number",
+            "data_type": "string",
+            "nullable": "true"
+        },
+        {
+            "source_column_name": "isundersupplybackordered",
+            "target_column_name": "is_undersupply_backordered",
+            "data_type": "boolean",
+            "nullable": "false"
+        },
+        {
+            "source_column_name": "comments",
+            "target_column_name": "comments",
+            "data_type": "string",
+            "nullable": "true"
+        },
+        {
+            "source_column_name": "deliveryinstructions",
+            "target_column_name": "delivery_instructions",
+            "data_type": "string",
+            "nullable": "true"
+        },
+        {
+            "source_column_name": "internalcomments",
+            "target_column_name": "internal_comments",
+            "data_type": "string",
+            "nullable": "true"
+        },
+        {
+            "source_column_name": "pickingcompletedwhen",
+            "target_column_name": "picking_completed_when",
+            "data_type": "timestamp",
+            "nullable": "true"
+        },
+        {
+            "source_column_name": "lasteditedby",
+            "target_column_name": "last_edited_by",
+            "data_type": "int",
+            "nullable": "false"
+        },
+        {
+            "source_column_name": "lasteditedwhen",
+            "target_column_name": "last_edited_when",
+            "data_type": "timestamp",
+            "nullable": "false"
+        }
+    ],
+    "quality_checks": [
+        {
+            "column": "order_id",
+            "type": "is_unique",
+            "assertion": "none",
+            "status": "error"
+        },
+        {
+            "column": "customer_id",
+            "type": "is_complete",
+            "assertion": "none",
+            "status": "error"
+        },
+        {
+            "column": "salesperson_person_id",
+            "type": "is_complete",
+            "assertion": "none",
+            "status": "error"
+        }
+    ]
+}

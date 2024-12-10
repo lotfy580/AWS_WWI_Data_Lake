@@ -1,0 +1,43 @@
+   {
+    "TargetMetadata": {
+      "TargetSchema": "%",
+      "SupportLobs": true,
+      "FullLobMode": false,
+      "LobChunkSize": 64,
+      "LimitedSizeLobMode": true,
+      "LobMaxSize": 32,
+      "InlineLobMaxSize": 0,
+      "LoadMaxFileSize": 0,
+      "ParallelLoadThreads": 0,
+      "ParallelLoadBufferSize": 0,
+      "BatchApplyEnabled": true,
+      "TaskRecoveryTableEnabled": true
+    },
+    "FullLoadSettings": {
+      "TargetTablePrepMode": "TRUNCATE_BEFORE_LOAD",
+      "CreatePkAfterFullLoad": false,
+      "StopTaskCachedChangesApplied": false,
+      "StopTaskCachedChangesNotApplied": false,
+      "MaxFullLoadSubTasks": 8,
+      "TransactionConsistencyTimeout": 600,
+      "CommitRate": 10000
+    },
+    "Logging": {
+      "EnableLogging": true
+    },
+    "ControlTablesSettings": {
+      "ControlSchema": "",
+      "HistoryTimeslotInMinutes": 5,
+      "ControlTablesPrefix": "",
+      "HistoryTableEnabled": true
+    },
+    "ChangeProcessingDdlHandlingPolicy": {
+      "HandleSourceTableDropped": true,
+      "HandleSourceTableTruncated": true,
+      "HandleSourceTableAltered": true
+    },
+    "AssessmentReportDetails": {
+      "EnableReport": true,
+      "ReportType": "PARQUET_FILE"
+    }
+  }

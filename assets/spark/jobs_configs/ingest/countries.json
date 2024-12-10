@@ -1,0 +1,129 @@
+{
+    "data_location": "s3://devwwidatalakehouse/wwi_landing/wwi_cdc.application.countries",
+    "iceberg_raw_table": "wwi_raw.countries",
+    "iceberg_validated_table": "wwi_validated.countries",
+    "DQ_output_location": "s3://devwwidatalakehouse/Deequ_checks",
+    "id_cols": [
+        "country_id"
+    ],
+    "columns_mapping": [
+        {
+            "source_column_name": "countryid",
+            "target_column_name": "country_id",
+            "data_type": "int",
+            "nullable": "false"
+        },
+        {
+            "source_column_name": "countryname",
+            "target_column_name": "country_name",
+            "data_type": "string",
+            "nullable": "false"
+        },
+        {
+            "source_column_name": "formalname",
+            "target_column_name": "formal_name",
+            "data_type": "string",
+            "nullable": "false"
+        },
+        {
+            "source_column_name": "isoalpha3code",
+            "target_column_name": "iso_alpha3_code",
+            "data_type": "string",
+            "nullable": "true"
+        },
+        {
+            "source_column_name": "isonumericcode",
+            "target_column_name": "iso_decimal_code",
+            "data_type": "int",
+            "nullable": "true"
+        },
+        {
+            "source_column_name": "countrytype",
+            "target_column_name": "country_type",
+            "data_type": "string",
+            "nullable": "true"
+        },
+        {
+            "source_column_name": "latestrecordedpopulation",
+            "target_column_name": "latest_recorded_population",
+            "data_type": "bigint",
+            "nullable": "true"
+        },
+        {
+            "source_column_name": "continent",
+            "target_column_name": "continent",
+            "data_type": "string",
+            "nullable": "false"
+        },
+        {
+            "source_column_name": "region",
+            "target_column_name": "region",
+            "data_type": "string",
+            "nullable": "false"
+        },
+        {
+            "source_column_name": "subregion",
+            "target_column_name": "subregion",
+            "data_type": "string",
+            "nullable": "false"
+        },
+        {
+            "source_column_name": "border",
+            "target_column_name": "border",
+            "data_type": "string",
+            "nullable": "false"
+        },
+        {
+            "source_column_name": "lasteditedby",
+            "target_column_name": "last_edited_by",
+            "data_type": "int",
+            "nullable": "true"
+        },
+        {
+            "source_column_name": "validfrom",
+            "target_column_name": "valid_from",
+            "data_type": "timestamp",
+            "nullable": "true"
+        },
+        {
+            "source_column_name": "validto",
+            "target_column_name": "valid_to",
+            "data_type": "timestamp",
+            "nullable": "true"
+        }
+    ],
+    "quality_checks": [
+        {
+            "column": "country_id",
+            "type": "is_unique",
+            "assertion": "none",
+            "status": "error"
+        },
+        {
+            "column": "country_name",
+            "type": "is_unique",
+            "assertion": "none",
+            "status": "error"
+        },
+        {
+            "column": "formal_name",
+            "type": "is_complete",
+            "assertion": "none",
+            "status": "warning"
+        },
+        {
+            "column": "continent",
+            "type": "is_contained_in",
+            "assertion": [
+                "Africa",
+                "Asia",
+                "Europe",
+                "North America",
+                "Oceania",
+                "Seven seas (open ocean)",
+                "South America"
+            ],
+            "status": "warning"
+        }
+    ]
+}

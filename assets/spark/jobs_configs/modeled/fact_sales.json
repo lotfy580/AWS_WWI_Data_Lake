@@ -1,0 +1,223 @@
+{
+    "fact_table": "wwi_dwh.fact_sales",
+    "DQ_output_URL": "s3://devwwidatalakehouse/Deequ_checks/DWH/fact_sales",
+    "surrogate_key": "sale_key",
+    "natural_keys": ["customer_key", "city_key", "bill_to_customer_key", "stock_item_key", "invoice_date_key", "salesperson_key"],
+    "source_tables" : [
+        "wwi_validated.invoice_lines", "wwi_validated.invoices", "wwi_validated.package_types", "wwi_validated.customers", "wwi_dwh.dim_city", "wwi_dwh.dim_stock_item", "wwi_dwh.dim_customer", "wwi_dwh.dim_employee"
+    ],
+    "joins": [
+        {
+            "with": "wwi_validated.invoices",
+            "alias": "invoices",
+            "broadcast":"false",
+            "join_condition":"invoice_lines.invoice_id = invoices.invoice_id",
+            "join_type": "left"
+        },
+        {
+            "with": "wwi_validated.customers",
+            "alias": "customers",
+            "broadcast":"true",
+            "join_condition":"invoices.customer_id = customers.customer_id",
+            "join_type": "left"
+        },
+        {
+            "with": "wwi_validated.package_types",
+            "alias": "package_types",
+            "broadcast":"true",
+            "join_condition":"invoice_lines.package_type_id = package_types.package_type_id",
+            "join_type": "left"
+        },
+        {
+            "with": "wwi_dwh.dim_customer",
+            "alias": "dim_customer",
+            "broadcast":"true",
+            "join_condition":"invoices.customer_id = dim_customer.customer_id AND dim_customer.is_current = 1",
+            "join_type": "left"
+        },
+        {
+            "with": "wwi_dwh.dim_customer",
+            "alias": "dim_bill_customer",
+            "broadcast":"true",
+            "join_condition":"invoices.billTo_customer_id = dim_bill_customer.customer_id AND dim_bill_customer.is_current = 1",
+            "join_type": "left"
+        },
+        {
+            "with": "wwi_dwh.dim_stock_item",
+            "alias": "stock_item",
+            "broadcast":"true",
+            "join_condition":"invoice_lines.stockItem_id = stock_item.stock_item_id AND stock_item.is_current = 1",
+            "join_type": "left"
+        },
+        {
+            "with": "wwi_dwh.dim_city",
+            "alias": "city",
+            "broadcast":"false",
+            "join_condition":"customers.delivery_city_id = city.city_id AND city.is_current = 1",
+            "join_type": "left"
+        },
+        {
+            "with": "wwi_dwh.dim_employee",
+            "alias": "sp_employee",
+            "broadcast":"true",
+            "join_condition":"invoices.salesperson_person_id = sp_employee.employee_id AND sp_employee.is_current = 1",
+            "join_type": "left"
+        }
+    ],
+    "filter": "none",
+    "columns": [
+        {
+            "name": "customer_key",
+            "source": "dim_customer.customer_key",
+            "datatype": "int",
+            "transform": "none"
+        },
+        {
+            "name": "bill_to_customer_key",
+            "source": "dim_bill_customer.customer_key",
+            "datatype": "int",
+            "transform": "none"
+        },
+        {
+            "name": "city_key",
+            "source": "city.city_key",
+            "datatype": "int",
+            "transform": "none"
+        },
+        {
+            "name": "stock_item_key",
+            "source": "stock_item.stock_item_key",
+            "datatype": "int",
+            "transform": "none"
+        },
+        {
+            "name": "invoice_date_key",
+            "source": "invoices.invoice_date",
+            "datatype": "date",
+            "transform": "none"
+        },
+        {
+            "name": "delivery_date_key",
+            "source": "invoices.invoice_date",
+            "datatype": "date",
+            "transform": "none"
+        },
+        {
+            "name": "salesperson_key",
+            "source": "sp_employee.employee_key",
+            "datatype": "int",
+            "transform": "none"
+        },
+        {
+            "name": "invoice_id",
+            "source": "invoices.invoice_id",
+            "datatype": "int",
+            "transform": "none"
+        },
+        {
+            "name": "description",
+            "source": "invoice_lines.description",
+            "datatype": "string",
+            "transform": "none"
+        },
+        {
+            "name": "package",
+            "source": "package_types.package_type_name",
+            "datatype": "string",
+            "transform": "none"
+        },
+        {
+            "name": "quantity",
+            "source": "invoice_lines.quantity",
+            "datatype": "int",
+            "transform": "none"
+        },
+        {
+            "name": "unit_price",
+            "source": "invoice_lines.unit_price",
+            "datatype": "decimal(18, 2)",
+            "transform": "none"
+        },
+        {
+            "name": "tax_rate",
+            "source": "invoice_lines.tax_rate",
+            "datatype": "decimal(18, 2)",
+            "transform": "none"
+        },
+        {
+            "name": "profit",
+            "source": "invoice_lines.line_profit",
+            "datatype": "decimal(18, 2)",
+            "transform": "none"
+        },
+        {
+            "name": "total_excluding_tax",
+            "source": "invoice_lines.unit_price,invoice_lines.quantity",
+            "datatype": "decimal(18, 2)",
+            "transform": "col('invoice_lines.unit_price') * col('invoice_lines.quantity')"
+        },
+        {
+            "name": "tax_amount",
+            "source": "invoice_lines.tax_rate,invoice_lines.quantity,invoice_lines.unit_price",
+            "datatype": "decimal(18, 2)",
+            "transform": "col('invoice_lines.unit_price') * (col('invoice_lines.tax_rate')/100) * col('invoice_lines.quantity')"
+        },
+        {
+            "name": "total_including_tax",
+            "source": "invoice_lines.tax_rate,invoice_lines.unit_price,invoice_lines.quantity",
+            "datatype": "decimal(18, 2)",
+            "transform": "(1 + col('invoice_lines.tax_rate')/100) * col('invoice_lines.quantity') * col('invoice_lines.unit_price')"
+        },
+        {
+            "name": "total_dry_items",
+            "source": "invoices.total_dry_items",
+            "datatype": "decimal(18, 2)",
+            "transform": "none"
+        },
+        {
+            "name": "total_chiller_items",
+            "source": "invoices.total_chiller_items",
+            "datatype": "decimal(18, 2)",
+            "transform": "none"
+        }
+    ],
+    "quality_checks": [
+        {
+            "column": "quantity",
+            "type": "has_min",
+            "assertion": "lambda x: x > 0",
+            "status": "error"
+        },
+        {
+            "column": "quantity",
+            "type": "has_max",
+            "assertion": "lambda x: x < 400",
+            "status": "error"
+        },
+        {
+            "column": "tax_rate",
+            "type": "has_max",
+            "assertion": "lambda x: x == 15",
+            "status": "error"
+        },
+        {
+            "column": "tax_rate",
+            "type": "has_min",
+            "assertion": "lambda x: x == 10",
+            "status": "error"
+        },
+        {
+            "column": "unit_price",
+            "type": "has_min",
+            "assertion": "lambda x: x >= 0.66",
+            "status": "error"
+        },
+        {
+            "column": "unit_price",
+            "type": "has_max",
+            "assertion": "lambda x: x <= 1899.00",
+            "status": "error"
+        }
+    ]
+    
+}

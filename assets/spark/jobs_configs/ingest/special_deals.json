@@ -1,0 +1,103 @@
+{
+    "data_location": "s3://devwwidatalakehouse/wwi_landing/wwi_cdc.sales.specialdeals",
+    "iceberg_raw_table": "wwi_raw.special_deals",
+    "iceberg_validated_table": "wwi_validated.special_deals",
+    "DQ_output_location": "s3://devwwidatalakehouse/Deequ_checks",
+    "id_cols": [
+        "special_deal_id"
+    ],
+    "columns_mapping": [
+        {
+            "source_column_name": "specialdealid",
+            "target_column_name": "special_deal_id",
+            "data_type": "int",
+            "nullable": "false"
+        },
+        {
+            "source_column_name": "stockitemid",
+            "target_column_name": "stock_item_id",
+            "data_type": "int",
+            "nullable": "true"
+        },
+        {
+            "source_column_name": "customerid",
+            "target_column_name": "customer_id",
+            "data_type": "int",
+            "nullable": "true"
+        },
+        {
+            "source_column_name": "buyinggroupid",
+            "target_column_name": "buying_group_id",
+            "data_type": "int",
+            "nullable": "true"
+        },
+        {
+            "source_column_name": "customercategoryid",
+            "target_column_name": "customer_category_id",
+            "data_type": "int",
+            "nullable": "true"
+        },
+        {
+            "source_column_name": "stockgroupid",
+            "target_column_name": "stock_group_id",
+            "data_type": "int",
+            "nullable": "true"
+        },
+        {
+            "source_column_name": "dealdescription",
+            "target_column_name": "deal_description",
+            "data_type": "string",
+            "nullable": "false"
+        },
+        {
+            "source_column_name": "startdate",
+            "target_column_name": "start_date",
+            "data_type": "date",
+            "nullable": "false"
+        },
+        {
+            "source_column_name": "enddate",
+            "target_column_name": "end_date",
+            "data_type": "date",
+            "nullable": "false"
+        },
+        {
+            "source_column_name": "discountamount",
+            "target_column_name": "discount_amount",
+            "data_type": "decimal(18, 3)",
+            "nullable": "true"
+        },
+        {
+            "source_column_name": "discountpercentage",
+            "target_column_name": "discount_percentage",
+            "data_type": "decimal(18, 3)",
+            "nullable": "true"
+        },
+        {
+            "source_column_name": "unitprice",
+            "target_column_name": "unit_price",
+            "data_type": "decimal(18, 3)",
+            "nullable": "true"
+        },
+        {
+            "source_column_name": "lasteditedby",
+            "target_column_name": "last_edited_by",
+            "data_type": "int",
+            "nullable": "false"
+        },
+        {
+            "source_column_name": "lasteditedwhen",
+            "target_column_name": "last_edited_when",
+            "data_type": "timestamp",
+            "nullable": "false"
+        }
+    ],
+    "quality_checks": [
+        {
+            "column": "special_deal_id",
+            "type": "is_unique",
+            "assertion": "none",
+            "status": "error"
+        }
+    ]
+}

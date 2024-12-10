@@ -1,0 +1,43 @@
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Action": [
+                "kafka:DescribeCluster",
+                "kafka:DescribeClusterOperation",
+                "kafka:GetBootstrapBrokers",
+                "kafka:GetClusterPolicy",
+                "kafka:ListClusters",
+                "kafka:ListClusterOperations",
+                "kafka:ListNodes"
+            ],
+            "Resource": "*"
+        },
+        {
+            "Effect": "Allow",
+            "Action": [
+                "kafka-cluster:*"
+            ],
+            "Resource": [
+                "arn:aws:kafka:${region}:${account_id}:cluster/${cluster_name}/*",
+                "arn:aws:kafka:${region}:${account_id}:topic/${cluster_name}/*",
+                "arn:aws:kafka:${region}:${account_id}:group/${cluster_name}/*",
+                "arn:aws:kafka:${region}:${account_id}:transactional-id/${cluster_name}/*/*"
+            ]
+        },
+        {
+            "Effect": "Allow",
+            "Action": [
+                "ecr:GetAuthorizationToken",
+                "ecr:BatchCheckLayerAvailability",
+                "ecr:GetDownloadUrlForLayer",
+                "ecr:BatchGetImage",
+                "logs:CreateLogStream",
+                "logs:PutLogEvents"
+            ],
+            "Resource": "*"
+        }
+    ]
+}
+

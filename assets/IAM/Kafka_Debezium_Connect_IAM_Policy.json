@@ -1,0 +1,69 @@
+{
+    "Version": "2012-10-17",
+    "Statement": [
+      {
+        "Effect": "Allow",
+        "Action": [
+            "kafka-cluster:*"
+        ],
+        "Resource": [
+            "arn:aws:kafka:${region}:${account_id}:cluster/${cluster_name}/*",
+            "arn:aws:kafka:${region}:${account_id}:topic/${cluster_name}/*",
+            "arn:aws:kafka:${region}:${account_id}:group/${cluster_name}/*",
+            "arn:aws:kafka:${region}:${account_id}:transactional-id/${cluster_name}/*/*"
+        ]
+      },
+      {
+        "Effect": "Allow",
+        "Action": [
+          "rds:DescribeDBInstances",
+          "rds:DescribeDBClusters",
+          "rds:ListTagsForResource"
+        ],
+        "Resource": "*"
+      },
+      {
+        "Effect": "Allow",
+        "Action": [
+          "logs:CreateLogStream",
+          "logs:PutLogEvents",
+          "logs:DescribeLogStreams"
+        ],
+        "Resource": "*"
+      },
+      {
+        "Effect": "Allow",
+        "Action": [
+          "secretsmanager:GetSecretValue",
+          "secretsmanager:DescribeSecret"
+        ],
+        "Resource": "*"
+      },
+      {
+        "Effect": "Allow",
+        "Action": [
+          "elasticloadbalancing:DescribeLoadBalancers"
+        ],
+        "Resource": "*"
+      },
+      {
+        "Effect": "Allow",
+        "Action": [
+          "ec2:DescribeSecurityGroups",
+          "ec2:DescribeSubnets",
+          "ec2:DescribeVpcs"
+        ],
+        "Resource": "*"
+      },
+      {
+        "Effect": "Allow",
+        "Action": [
+          "ecs:DescribeTaskDefinition",
+          "ecs:DescribeTasks",
+          "ecs:ListTasks",
+          "ecs:RunTask"
+        ],
+        "Resource": "*"
+      }
+    ]
+  }

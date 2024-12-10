@@ -1,0 +1,44 @@
+{
+    "dimension_table": "wwi_dwh.dim_transaction_type",
+    "DQ_output_URL": "s3://devwwidatalakehouse/Deequ_checks/DWH/dim_transaction_type",
+    "surrogate_key": "transaction_type_key",
+    "natural_keys": ["transaction_type_id"],
+    "source_tables" : [
+        "wwi_validated.transaction_types"
+    ],
+    "joins": [
+    ],
+    "filter": "none",
+    "columns": [
+        {
+            "name": "transaction_type_id",
+            "source": "transaction_types.transaction_type_id",
+            "datatype": "int",
+            "transform": "none",
+            "scd_type": "0"
+        },
+        {
+            "name": "transaction_type",
+            "source": "transaction_types.transaction_type_name",
+            "datatype": "string",
+            "transform": "none",
+            "scd_type": "2"
+        }
+    ],
+    "quality_checks": [
+        {
+            "column": "transaction_type_id",
+            "type": "is_complete",
+            "assertion": "none",
+            "status": "error"
+        },
+        {
+            "column": "transaction_type",
+            "type": "is_name",
+            "assertion": "none",
+            "status": "warning"
+        }
+    
+    ]
+    
+}

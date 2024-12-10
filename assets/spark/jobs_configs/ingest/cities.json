@@ -1,0 +1,79 @@
+{
+    "data_location": "s3://devwwidatalakehouse/wwi_landing/wwi_cdc.application.cities",
+    "iceberg_raw_table": "wwi_raw.cities",
+    "iceberg_validated_table": "wwi_validated.cities",
+    "DQ_output_location": "s3://devwwidatalakehouse/Deequ_checks",
+    "id_cols": [
+        "city_id"
+    ],
+    "columns_mapping": [
+        {
+            "source_column_name": "cityid",
+            "target_column_name": "city_id",
+            "data_type": "int",
+            "nullable": "false"
+        },
+        {
+            "source_column_name": "cityname",
+            "target_column_name": "city_name",
+            "data_type": "string",
+            "nullable": "true"
+        },
+        {
+            "source_column_name": "stateprovinceid",
+            "target_column_name": "stateprovince_id",
+            "data_type": "int",
+            "nullable": "true"
+        },
+        {
+            "source_column_name": "location",
+            "target_column_name": "location",
+            "data_type": "string",
+            "nullable": "true"
+        },
+        {
+            "source_column_name": "latestrecordedpopulation",
+            "target_column_name": "latest_recorded_population",
+            "data_type": "bigint",
+            "nullable": "true"
+        },
+        {
+            "source_column_name": "lasteditedby",
+            "target_column_name": "last_edited_by",
+            "data_type": "int",
+            "nullable": "true"
+        },
+        {
+            "source_column_name": "validfrom",
+            "target_column_name": "valid_from",
+            "data_type": "timestamp",
+            "nullable": "true"
+        },
+        {
+            "source_column_name": "validto",
+            "target_column_name": "valid_to",
+            "data_type": "timestamp",
+            "nullable": "true"
+        }
+    ],
+    "quality_checks": [
+        {
+            "column": "city_id",
+            "type": "is_unique",
+            "assertion": "none",
+            "status": "error"
+        },
+        {
+            "column": "city_name",
+            "type": "is_name",
+            "assertion": "none",
+            "status": "warning"
+        },
+        {
+            "column": "latest_recorded_population",
+            "type": "is_non_negative",
+            "assertion": "none",
+            "status": "warning"
+        }
+    ]
+}

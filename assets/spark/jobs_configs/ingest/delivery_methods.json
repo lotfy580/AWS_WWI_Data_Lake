@@ -1,0 +1,55 @@
+{
+    "data_location": "s3://devwwidatalakehouse/wwi_landing/wwi_cdc.application.deliverymethods",
+    "iceberg_raw_table": "wwi_raw.delivery_methods",
+    "iceberg_validated_table": "wwi_validated.delivery_methods",
+    "DQ_output_location": "s3://devwwidatalakehouse/Deequ_checks",
+    "id_cols": [
+        "delivery_method_id"
+    ],
+    "columns_mapping": [
+        {
+            "source_column_name": "deliverymethodid",
+            "target_column_name": "delivery_method_id",
+            "data_type": "int",
+            "nullable": "false"
+        },
+        {
+            "source_column_name": "deliverymethodname",
+            "target_column_name": "delivery_method_name",
+            "data_type": "string",
+            "nullable": "false"
+        },
+        {
+            "source_column_name": "lasteditedby",
+            "target_column_name": "last_edited_by",
+            "data_type": "int",
+            "nullable": "true"
+        },
+        {
+            "source_column_name": "validfrom",
+            "target_column_name": "valid_from",
+            "data_type": "timestamp",
+            "nullable": "true"
+        },
+        {
+            "source_column_name": "validto",
+            "target_column_name": "valid_to",
+            "data_type": "timestamp",
+            "nullable": "true"
+        }
+    ],
+    "quality_checks": [
+        {
+            "column": "delivery_method_id",
+            "type": "is_unique",
+            "assertion": "none",
+            "status": "error"
+        },
+        {
+            "column": "delivery_method_name",
+            "type": "is_name",
+            "assertion": "none",
+            "status": "warning"
+        }
+    ]
+}

@@ -1,0 +1,53 @@
+[    
+    {
+      "name": "${container_name}",
+      "image": "${container_image}",
+      "cpu": ${fargate_cpu},
+      "memory": ${fargate_memory},
+      "networkMode": "awsvpc",
+      "logConfiguration": {
+          "logDriver": "awslogs",
+          "options": {
+            "awslogs-group": "${log_group_name}",
+            "awslogs-region": "${region}",
+            "awslogs-stream-prefix": "registry"
+          }
+      },
+      "portMappings": [
+        {
+          "containerPort": ${container_port},
+          "hostPort": ${host_port}
+        }
+      ],
+      "environment": [
+        {
+          "name": "SCHEMA_REGISTRY_LISTENERS",
+          "value": "http://0.0.0.0:${container_port}"
+        },
+        {
+          "name": "SCHEMA_REGISTRY_HOST_NAME",
+          "value": "${host_name}"
+        },
+        {
+          "name": "SCHEMA_REGISTRY_KAFKASTORE_BOOTSTRAP_SERVERS",
+          "value": "${msk_bootstrap}"
+        },
+        {
+            "name": "SCHEMA_REGISTRY_KAFKASTORE_SECURITY_PROTOCOL",
+            "value": "SASL_SSL"
+        },
+        {
+            "name": "SCHEMA_REGISTRY_KAFKASTORE_SASL_MECHANISM",
+            "value": "AWS_MSK_IAM"
+        },
+        {
+            "name": "SCHEMA_REGISTRY_KAFKASTORE_SASL_JAAS_CONFIG",
+            "value": "software.amazon.msk.auth.iam.IAMLoginModule required awsDebugCreds=true;"
+        },
+        {
+            "name": "SCHEMA_REGISTRY_KAFKASTORE_SASL_CLIENT_CALLBACK_HANDLER_CLASS",
+            "value": "software.amazon.msk.auth.iam.IAMClientCallbackHandler"
+        }
+      ]
+    }
+]

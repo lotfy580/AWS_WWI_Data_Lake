@@ -1,0 +1,32 @@
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Action": [
+                "kafka-cluster:*"
+            ],
+            "Resource": [
+                "arn:aws:kafka:${region}:${account_id}:cluster/${cluster_name}/*",
+                "arn:aws:kafka:${region}:${account_id}:topic/${cluster_name}/*",
+                "arn:aws:kafka:${region}:${account_id}:group/${cluster_name}/*",
+                "arn:aws:kafka:${region}:${account_id}:transactional-id/${cluster_name}/*/*"
+            ]
+        },
+        {
+            "Effect": "Allow",
+            "Action": "s3:*",
+            "Resource": [
+              "arn:aws:s3:::${bucket}",
+              "arn:aws:s3:::${bucket}/*"
+            ]
+        },
+        {
+            "Effect": "Allow",
+            "Action": [
+              "elasticloadbalancing:DescribeLoadBalancers"
+            ],
+            "Resource": "*"
+          }
+    ]
+  }

@@ -1,0 +1,73 @@
+{
+    "data_location": "s3://devwwidatalakehouse/wwi_landing/wwi_cdc.warehouse.stockitemholdings",
+    "iceberg_raw_table": "wwi_raw.stock_item_holdings",
+    "iceberg_validated_table": "wwi_validated.stock_item_holdings",
+    "DQ_output_location": "s3://devwwidatalakehouse/Deequ_checks",
+    "id_cols": [
+        "stock_item_id"
+    ],
+    "columns_mapping": [
+        {
+            "source_column_name": "stockitemid",
+            "target_column_name": "stock_item_id",
+            "data_type": "int",
+            "nullable": "false"
+        },
+        {
+            "source_column_name": "quantityonhand",
+            "target_column_name": "quantity_on_hand",
+            "data_type": "int",
+            "nullable": "false"
+        },
+        {
+            "source_column_name": "binlocation",
+            "target_column_name": "bin_location",
+            "data_type": "string",
+            "nullable": "false"
+        },
+        {
+            "source_column_name": "laststocktakequantity",
+            "target_column_name": "last_stock_take_quantity",
+            "data_type": "int",
+            "nullable": "false"
+        },
+        {
+            "source_column_name": "lastcostprice",
+            "target_column_name": "last_cost_price",
+            "data_type": "decimal(18, 3)",
+            "nullable": "false"
+        },
+        {
+            "source_column_name": "reorderlevel",
+            "target_column_name": "reorder_level",
+            "data_type": "int",
+            "nullable": "false"
+        },
+        {
+            "source_column_name": "targetstocklevel",
+            "target_column_name": "target_stock_level",
+            "data_type": "int",
+            "nullable": "false"
+        },
+        {
+            "source_column_name": "lasteditedby",
+            "target_column_name": "last_edited_by",
+            "data_type": "int",
+            "nullable": "false"
+        },
+        {
+            "source_column_name": "lasteditedwhen",
+            "target_column_name": "last_edited_when",
+            "data_type": "timestamp",
+            "nullable": "true"
+        }
+    ],
+    "quality_checks": [
+        {
+            "column": "stock_item_id",
+            "type": "is_unique",
+            "assertion": "none",
+            "status": "error"
+        }
+    ]
+}

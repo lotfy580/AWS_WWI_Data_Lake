@@ -1,0 +1,111 @@
+{
+    "fact_table": "wwi_dwh.fact_movement",
+    "DQ_output_URL": "s3://devwwidatalakehouse/Deequ_checks/DWH/fact_movement",
+    "surrogate_key": "movement_key",
+    "natural_keys": ["date_key", "stock_item_key", "customer_key", "supplier_key", "transaction_type_key "],
+    "source_tables" : [
+        "wwi_validated.stock_item_transactions", "wwi_dwh.dim_customer", "wwi_dwh.dim_supplier", "wwi_dwh.dim_transaction_type", "wwi_dwh.dim_stock_item"
+    ],
+    "joins": [
+        {
+            "with": "wwi_dwh.dim_customer",
+            "alias": "customer",
+            "broadcast":"true",
+            "join_condition":"stock_item_transactions.customer_id = customer.customer_id AND customer.is_current = 1",
+            "join_type": "left"
+        },
+        {
+            "with": "wwi_dwh.dim_supplier",
+            "alias": "supplier",
+            "broadcast":"true",
+            "join_condition":"stock_item_transactions.supplier_id = supplier.supplier_id AND supplier.is_current = 1",
+            "join_type": "left"
+        },
+        {
+            "with": "wwi_dwh.dim_transaction_type",
+            "alias": "transaction_type",
+            "broadcast":"true",
+            "join_condition":"stock_item_transactions.transaction_type_id = transaction_type.transaction_type_id AND transaction_type.is_current = 1",
+            "join_type": "left"
+        },
+        {
+            "with": "wwi_dwh.dim_stock_item",
+            "alias": "stock_item",
+            "broadcast":"true",
+            "join_condition":"stock_item_transactions.stock_item_id = stock_item.stock_item_id AND stock_item.is_current = 1",
+            "join_type": "left"
+        }
+    ],
+    "filter": "none",
+    "columns": [
+        {
+            "name": "date_key",
+            "source": "stock_item_transactions.transaction_occurred_when",
+            "datatype": "date",
+            "transform": "none"
+        },
+        {
+            "name": "stock_item_key",
+            "source": "stock_item.stock_item_key",
+            "datatype": "int",
+            "transform": "none"
+        },
+        {
+            "name": "supplier_key",
+            "source": "supplier.supplier_key",
+            "datatype": "int",
+            "transform": "none"
+        },
+        {
+            "name": "customer_key",
+            "source": "customer.customer_key",
+            "datatype": "int",
+            "transform": "none"
+        },
+        {
+            "name": "transaction_type_key",
+            "source": "transaction_type.transaction_type_key",
+            "datatype": "int",
+            "transform": "none"
+        },
+        {
+            "name": "stock_item_transaction_id",
+            "source": "stock_item_transactions.stock_item_transaction_id",
+            "datatype": "int",
+            "transform": "none"
+        },
+        {
+            "name": "Invoice_id",
+            "source": "stock_item_transactions.invoice_id",
+            "datatype": "int",
+            "transform": "none"
+        },
+        {
+            "name": "purchase_order_id",
+            "source": "stock_item_transactions.purchase_order_id",
+            "datatype": "int",
+            "transform": "none"
+        },
+        {
+            "name": "quantity",
+            "source": "stock_item_transactions.quantity",
+            "datatype": "decimal(18,3)",
+            "transform": "none"
+        }
+    ],
+    "quality_checks": [
+        {
+            "column": "quantity",
+            "type": "has_min",
+            "assertion": "lambda x: x > -400",
+            "status": "error"
+        },
+        {
+            "column": "quantity",
+            "type": "has_max",
+            "assertion": "lambda x: x < 100000",
+            "status": "error"
+        }
+    ]
+    
+}

@@ -1,0 +1,97 @@
+{
+    "data_location": "s3://devwwidatalakehouse/wwi_landing/wwi_cdc.application.systemparameters",
+    "iceberg_raw_table": "wwi_raw.system_parameters",
+    "iceberg_validated_table": "wwi_validated.system_parameters",
+    "DQ_output_location": "s3://devwwidatalakehouse/Deequ_checks",
+    "id_cols": [
+        "system_parameter_id"
+    ],
+    "columns_mapping": [
+        {
+            "source_column_name": "systemparameterid",
+            "target_column_name": "system_parameter_id",
+            "data_type": "int",
+            "nullable": "false"
+        },
+        {
+            "source_column_name": "deliveryaddressline1",
+            "target_column_name": "delivery_address_line1",
+            "data_type": "string",
+            "nullable": "false"
+        },
+        {
+            "source_column_name": "deliveryaddressline2",
+            "target_column_name": "delivery_address_line2",
+            "data_type": "string",
+            "nullable": "true"
+        },
+        {
+            "source_column_name": "deliverycityid",
+            "target_column_name": "delivery_city_id",
+            "data_type": "int",
+            "nullable": "false"
+        },
+        {
+            "source_column_name": "deliverypostalcode",
+            "target_column_name": "delivery_postal_code",
+            "data_type": "string",
+            "nullable": "false"
+        },
+        {
+            "source_column_name": "deliverylocation",
+            "target_column_name": "delivery_location",
+            "data_type": "string",
+            "nullable": "false"
+        },
+        {
+            "source_column_name": "postaladdressline1",
+            "target_column_name": "postal_address_line1",
+            "data_type": "string",
+            "nullable": "false"
+        },
+        {
+            "source_column_name": "postaladdressline2",
+            "target_column_name": "postal_address_line2",
+            "data_type": "string",
+            "nullable": "true"
+        },
+        {
+            "source_column_name": "postalcityid",
+            "target_column_name": "postal_city_id",
+            "data_type": "int",
+            "nullable": "false"
+        },
+        {
+            "source_column_name": "postalpostalcode",
+            "target_column_name": "postal_postal_code",
+            "data_type": "string",
+            "nullable": "false"
+        },
+        {
+            "source_column_name": "applicationsettings",
+            "target_column_name": "application_settings",
+            "data_type": "string",
+            "nullable": "false"
+        },
+        {
+            "source_column_name": "lasteditedby",
+            "target_column_name": "last_edited_by",
+            "data_type": "int",
+            "nullable": "false"
+        },
+        {
+            "source_column_name": "lasteditedwhen",
+            "target_column_name": "last_edited_when",
+            "data_type": "timestamp",
+            "nullable": "false"
+        }
+    ],
+    "quality_checks": [
+        {
+            "column": "system_parameter_id",
+            "type": "is_unique",
+            "assertion": "none",
+            "status": "error"
+        }
+    ]
+}

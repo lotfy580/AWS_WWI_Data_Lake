@@ -1,0 +1,81 @@
+{
+    "dimension_table": "wwi_dwh.dim_employee",
+    "DQ_output_URL": "s3://devwwidatalakehouse/Deequ_checks/DWH/dim_employee",
+    "surrogate_key": "employee_key",
+    "natural_keys": ["employee_id"],
+    "source_tables" : [
+        "wwi_validated.people"
+    ],
+    "joins": [],
+    "filter": "people.is_employee = 1",
+    "columns": [
+        {
+            "name": "employee_id",
+            "source": "people.person_id",
+            "datatype": "int",
+            "transform": "none",
+            "scd_type": "0"
+        },
+        {
+            "name": "employee",
+            "source": "people.full_name",
+            "datatype": "string",
+            "transform": "none",
+            "scd_type": "1"
+        },
+        {
+            "name": "preferred_name",
+            "source": "people.preferred_name",
+            "datatype": "string",
+            "transform": "none",
+            "scd_type": "2"
+        },
+        {
+            "name": "is_salesperson",
+            "source": "people.is_sales_person",
+            "datatype": "boolean",
+            "transform": "none",
+            "scd_type": "2"
+        },
+        {
+            "name": "Photo",
+            "source": "people.Photo",
+            "datatype": "binary",
+            "transform": "none",
+            "scd_type": "1"
+        }
+    ],
+    "quality_checks": [
+        {
+            "column": "employee_id",
+            "type": "is_complete",
+            "assertion": "none",
+            "status": "error"
+        },
+        {
+            "column": "employee",
+            "type": "is_name",
+            "assertion": "none",
+            "status": "warning"
+        },
+        {
+            "column": "employee",
+            "type": "is_complete",
+            "assertion": "none",
+            "status": "warning"
+        },
+        {
+            "column": "preferred_name",
+            "type": "is_name",
+            "assertion": "none",
+            "status": "warning"
+        },
+        {
+            "column": "preferred_name",
+            "type": "has_max_length",
+            "assertion": "lambda x: x < 200",
+            "status": "error"
+        }
+    ]
+    
+}

@@ -1,0 +1,211 @@
+{
+    "fact_table": "wwi_dwh.fact_order",
+    "DQ_output_URL": "s3://devwwidatalakehouse/Deequ_checks/DWH/fact_order",
+    "surrogate_key": "order_key",
+    "natural_keys": ["customer_key", "city_key", "stock_item_key", "order_date_key", "picked_date_key", "salesperson_key", "picker_key"],
+    "source_tables" : [
+        "wwi_validated.order_lines", "wwi_validated.orders", "wwi_validated.package_types", "wwi_validated.customers", "wwi_dwh.dim_date", "wwi_dwh.dim_city", "wwi_dwh.dim_stock_item", "wwi_dwh.dim_customer", "wwi_dwh.dim_employee"
+    ],
+    "joins": [
+        {
+            "with": "wwi_validated.orders",
+            "alias": "orders",
+            "broadcast":"false",
+            "join_condition":"order_lines.order_id = orders.order_id",
+            "join_type": "left"
+        },
+        {
+            "with": "wwi_validated.customers",
+            "alias": "customers",
+            "broadcast":"true",
+            "join_condition":"orders.customer_id = customers.customer_id",
+            "join_type": "left"
+        },
+        {
+            "with": "wwi_validated.package_types",
+            "alias": "package_types",
+            "broadcast":"true",
+            "join_condition":"order_lines.package_type_id = package_types.package_type_id",
+            "join_type": "left"
+        },
+        {
+            "with": "wwi_dwh.dim_customer",
+            "alias": "dim_customer",
+            "broadcast":"true",
+            "join_condition":"orders.customer_id = dim_customer.customer_id AND dim_customer.is_current = 1",
+            "join_type": "left"
+        },
+        {
+            "with": "wwi_dwh.dim_stock_item",
+            "alias": "stock_item",
+            "broadcast":"true",
+            "join_condition":"order_lines.stock_item_id = stock_item.stock_item_id AND stock_item.is_current = 1",
+            "join_type": "left"
+        },
+        {
+            "with": "wwi_dwh.dim_city",
+            "alias": "city",
+            "broadcast":"false",
+            "join_condition":"customers.delivery_city_id = city.city_id AND city.is_current = 1",
+            "join_type": "left"
+        },
+        {
+            "with": "wwi_dwh.dim_employee",
+            "alias": "sp_employee",
+            "broadcast":"true",
+            "join_condition":"orders.salesperson_person_id = sp_employee.employee_id AND sp_employee.is_current = 1",
+            "join_type": "left"
+        },
+        {
+            "with": "wwi_dwh.dim_employee",
+            "alias": "pk_employee",
+            "broadcast":"true",
+            "join_condition":"orders.picked_by_person_id = pk_employee.employee_id AND pk_employee.is_current = 1",
+            "join_type": "left"
+        }
+    ],
+    "filter": "none",
+    "columns": [
+        {
+            "name": "customer_key",
+            "source": "dim_customer.customer_key",
+            "datatype": "int",
+            "transform": "none"
+        },
+        {
+            "name": "city_key",
+            "source": "city.city_key",
+            "datatype": "int",
+            "transform": "none"
+        },
+        {
+            "name": "stock_item_key",
+            "source": "stock_item.stock_item_key",
+            "datatype": "int",
+            "transform": "none"
+        },
+        {
+            "name": "order_date_key",
+            "source": "orders.order_date",
+            "datatype": "date",
+            "transform": "none"
+        },
+        {
+            "name": "picked_date_key",
+            "source": "orders.expected_delivery_date",
+            "datatype": "date",
+            "transform": "none"
+        },
+        {
+            "name": "salesperson_key",
+            "source": "sp_employee.employee_key",
+            "datatype": "int",
+            "transform": "none"
+        },
+        {
+            "name": "picker_key",
+            "source": "pk_employee.employee_key",
+            "datatype": "int",
+            "transform": "none"
+        },
+        {
+            "name": "order_id",
+            "source": "orders.order_id",
+            "datatype": "int",
+            "transform": "none"
+        },
+        {
+            "name": "backorder_id",
+            "source": "orders.backorder_order_id",
+            "datatype": "int",
+            "transform": "none"
+        },
+        {
+            "name": "description",
+            "source": "order_lines.description",
+            "datatype": "string",
+            "transform": "none"
+        },
+        {
+            "name": "package",
+            "source": "package_types.package_type_name",
+            "datatype": "string",
+            "transform": "none"
+        },
+        {
+            "name": "quantity",
+            "source": "order_lines.quantity",
+            "datatype": "int",
+            "transform": "none"
+        },
+        {
+            "name": "unit_price",
+            "source": "order_lines.unit_price",
+            "datatype": "decimal(18, 2)",
+            "transform": "none"
+        },
+        {
+            "name": "tax_rate",
+            "source": "order_lines.tax_rate",
+            "datatype": "decimal(18, 2)",
+            "transform": "none"
+        },
+        {
+            "name": "total_excluding_tax",
+            "source": "order_lines.unit_price,order_lines.quantity",
+            "datatype": "decimal(18, 2)",
+            "transform": "col('order_lines.unit_price') * col('order_lines.quantity')"
+        },
+        {
+            "name": "tax_amount",
+            "source": "order_lines.tax_rate,order_lines.quantity,order_lines.unit_price",
+            "datatype": "decimal(18, 2)",
+            "transform": "col('order_lines.unit_price') * (col('order_lines.tax_rate')/100) * col('order_lines.quantity')"
+        },
+        {
+            "name": "total_including_tax",
+            "source": "order_lines.tax_rate,order_lines.unit_price,order_lines.quantity",
+            "datatype": "decimal(18, 2)",
+            "transform": "(1 + col('order_lines.tax_rate')/100) * col('order_lines.quantity') * col('order_lines.unit_price')"
+        }
+    ],
+    "quality_checks": [
+        {
+            "column": "quantity",
+            "type": "has_min",
+            "assertion": "lambda x: x > 0",
+            "status": "error"
+        },
+        {
+            "column": "quantity",
+            "type": "has_max",
+            "assertion": "lambda x: x < 400",
+            "status": "error"
+        },
+        {
+            "column": "tax_rate",
+            "type": "has_max",
+            "assertion": "lambda x: x == 15",
+            "status": "error"
+        },
+        {
+            "column": "tax_rate",
+            "type": "has_min",
+            "assertion": "lambda x: x == 10",
+            "status": "error"
+        },
+        {
+            "column": "unit_price",
+            "type": "has_min",
+            "assertion": "lambda x: x >= 0.66",
+            "status": "error"
+        },
+        {
+            "column": "unit_price",
+            "type": "has_max",
+            "assertion": "lambda x: x <= 1899.00",
+            "status": "error"
+        }
+    ]
+    
+}

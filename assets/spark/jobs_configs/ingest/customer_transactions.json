@@ -1,0 +1,133 @@
+{
+    "data_location": "s3://devwwidatalakehouse/wwi_landing/wwi_cdc.sales.customertransactions",
+    "iceberg_raw_table": "wwi_raw.customer_transactions",
+    "iceberg_validated_table": "wwi_validated.customer_transactions",
+    "DQ_output_location": "s3://devwwidatalakehouse/Deequ_checks",
+    "id_cols": [
+        "customer_transaction_id"
+    ],
+    "columns_mapping": [
+        {
+            "source_column_name": "customertransactionid",
+            "target_column_name": "customer_transaction_id",
+            "data_type": "int",
+            "nullable": "false"
+        },
+        {
+            "source_column_name": "customerid",
+            "target_column_name": "customer_id",
+            "data_type": "int",
+            "nullable": "false"
+        },
+        {
+            "source_column_name": "transactiontypeid",
+            "target_column_name": "transaction_type_id",
+            "data_type": "int",
+            "nullable": "false"
+        },
+        {
+            "source_column_name": "invoiceid",
+            "target_column_name": "invoice_id",
+            "data_type": "int",
+            "nullable": "true"
+        },
+        {
+            "source_column_name": "paymentmethodid",
+            "target_column_name": "payment_method_id",
+            "data_type": "int",
+            "nullable": "true"
+        },
+        {
+            "source_column_name": "transactiondate",
+            "target_column_name": "transaction_date",
+            "data_type": "date",
+            "nullable": "false"
+        },
+        {
+            "source_column_name": "amountexcludingtax",
+            "target_column_name": "amount_excluding_tax",
+            "data_type": "decimal(18, 2)",
+            "nullable": "false"
+        },
+        {
+            "source_column_name": "taxamount",
+            "target_column_name": "tax_amount",
+            "data_type": "decimal(18, 2)",
+            "nullable": "false"
+        },
+        {
+            "source_column_name": "transactionamount",
+            "target_column_name": "transaction_amount",
+            "data_type": "decimal(18, 2)",
+            "nullable": "false"
+        },
+        {
+            "source_column_name": "outstandingbalance",
+            "target_column_name": "outstanding_balance",
+            "data_type": "decimal(18, 2)",
+            "nullable": "false"
+        },
+        {
+            "source_column_name": "finalizationdate",
+            "target_column_name": "finalization_date",
+            "data_type": "date",
+            "nullable": "true"
+        },
+        {
+            "source_column_name": "isfinalized",
+            "target_column_name": "is_finalized",
+            "data_type": "boolean",
+            "nullable": "true"
+        },
+        {
+            "source_column_name": "lasteditedby",
+            "target_column_name": "last_edited_by",
+            "data_type": "int",
+            "nullable": "false"
+        },
+        {
+            "source_column_name": "lasteditedwhen",
+            "target_column_name": "last_edited_when",
+            "data_type": "timestamp",
+            "nullable": "false"
+        }
+    ],
+    "quality_checks": [
+        {
+            "column": "customer_transaction_id",
+            "type": "is_unique",
+            "assertion": "none",
+            "status": "error"
+        },
+        {
+            "column": "customer_id",
+            "type": "is_complete",
+            "assertion": "none",
+            "status": "error"
+        },
+        {
+            "column": "transaction_type_id",
+            "type": "is_complete",
+            "assertion": "none",
+            "status": "error"
+        },
+        {
+            "column": "amount_excluding_tax",
+            "type": "has_max",
+            "assertion": "lambda x: x <= 40000.00",
+            "status": "error"
+        },
+        {
+            "column": "tax_amount",
+            "type": "has_max",
+            "assertion": "lambda x: x <= 5000.00",
+            "status": "warning"
+        },
+        {
+            "column": "transaction_amount",
+            "type": "has_max",
+            "assertion": "lambda x: x <= 45000.00",
+            "status": "warning"
+        }
+    ]
+}

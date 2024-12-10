@@ -1,0 +1,151 @@
+{
+    "data_location": "s3://devwwidatalakehouse/wwi_landing/wwi_cdc.application.people",
+    "iceberg_raw_table": "wwi_raw.people",
+    "iceberg_validated_table": "wwi_validated.people",
+    "DQ_output_location": "s3://devwwidatalakehouse/Deequ_checks",
+    "id_cols": [
+        "person_id"
+    ],
+    "columns_mapping": [
+        {
+            "source_column_name": "personid",
+            "target_column_name": "person_id",
+            "data_type": "int",
+            "nullable": "false"
+        },
+        {
+            "source_column_name": "fullname",
+            "target_column_name": "full_name",
+            "data_type": "string",
+            "nullable": "false"
+        },
+        {
+            "source_column_name": "preferredname",
+            "target_column_name": "preferred_name",
+            "data_type": "string",
+            "nullable": "false"
+        },
+        {
+            "source_column_name": "searchname",
+            "target_column_name": "search_name",
+            "data_type": "string",
+            "nullable": "false"
+        },
+        {
+            "source_column_name": "ispermittedtologon",
+            "target_column_name": "is_permitted_to_logon",
+            "data_type": "boolean",
+            "nullable": "false"
+        },
+        {
+            "source_column_name": "logonname",
+            "target_column_name": "Logon_name",
+            "data_type": "string",
+            "nullable": "true"
+        },
+        {
+            "source_column_name": "isexternallogonprovider",
+            "target_column_name": "is_external_logon_provider",
+            "data_type": "boolean",
+            "nullable": "false"
+        },
+        {
+            "source_column_name": "hashedpassword",
+            "target_column_name": "hashed_password",
+            "data_type": "binary",
+            "nullable": "true"
+        },
+        {
+            "source_column_name": "issystemuser",
+            "target_column_name": "is_system_user",
+            "data_type": "boolean",
+            "nullable": "false"
+        },
+        {
+            "source_column_name": "isemployee",
+            "target_column_name": "is_employee",
+            "data_type": "boolean",
+            "nullable": "false"
+        },
+        {
+            "source_column_name": "issalesperson",
+            "target_column_name": "is_sales_person",
+            "data_type": "boolean",
+            "nullable": "false"
+        },
+        {
+            "source_column_name": "userpreferences",
+            "target_column_name": "user_preferences",
+            "data_type": "string",
+            "nullable": "true"
+        },
+        {
+            "source_column_name": "phonenumber",
+            "target_column_name": "phone_number",
+            "data_type": "string",
+            "nullable": "true"
+        },
+        {
+            "source_column_name": "faxnumber",
+            "target_column_name": "fax_number",
+            "data_type": "string",
+            "nullable": "true"
+        },
+        {
+            "source_column_name": "emailaddress",
+            "target_column_name": "email_address",
+            "data_type": "string",
+            "nullable": "true"
+        },
+        {
+            "source_column_name": "photo",
+            "target_column_name": "photo",
+            "data_type": "binary",
+            "nullable": "true"
+        },
+        {
+            "source_column_name": "customfields",
+            "target_column_name": "custom_fields",
+            "data_type": "string",
+            "nullable": "true"
+        },
+        {
+            "source_column_name": "otherlanguages",
+            "target_column_name": "other_languages",
+            "data_type": "string",
+            "nullable": "true"
+        },
+        {
+            "source_column_name": "lasteditedby",
+            "target_column_name": "last_edited_by",
+            "data_type": "int",
+            "nullable": "true"
+        },
+        {
+            "source_column_name": "validfrom",
+            "target_column_name": "valid_from",
+            "data_type": "timestamp",
+            "nullable": "true"
+        },
+        {
+            "source_column_name": "validto",
+            "target_column_name": "valid_to",
+            "data_type": "timestamp",
+            "nullable": "true"
+        }
+    ],
+    "quality_checks": [
+        {
+            "column": "person_id",
+            "type": "is_unique",
+            "assertion": "none",
+            "status": "error"
+        },
+        {
+            "column": "full_name",
+            "type": "is_full_name",
+            "assertion": "none",
+            "status": "warning"
+        }
+    ]
+}

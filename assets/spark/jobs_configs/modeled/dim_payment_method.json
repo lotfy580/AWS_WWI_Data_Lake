@@ -1,0 +1,44 @@
+{
+    "dimension_table": "wwi_dwh.dim_payment_method",
+    "DQ_output_URL": "s3://devwwidatalakehouse/Deequ_checks/DWH/dim_payment_method",
+    "surrogate_key": "payment_method_key",
+    "natural_keys": ["payment_method_id"],
+    "source_tables" : [
+        "wwi_validated.payment_methods"
+    ],
+    "joins": [
+    ],
+    "filter": "none",
+    "columns": [
+        {
+            "name": "payment_method_id",
+            "source": "payment_methods.payment_method_id",
+            "datatype": "int",
+            "transform": "none",
+            "scd_type": "0"
+        },
+        {
+            "name": "payment_method",
+            "source": "payment_methods.payment_method_name",
+            "datatype": "string",
+            "transform": "none",
+            "scd_type": "2"
+        }
+    ],
+    "quality_checks": [
+        {
+            "column": "payment_method_id",
+            "type": "is_complete",
+            "assertion": "none",
+            "status": "error"
+        },
+        {
+            "column": "payment_method",
+            "type": "is_name",
+            "assertion": "none",
+            "status": "warning"
+        }
+    
+    ]
+    
+}

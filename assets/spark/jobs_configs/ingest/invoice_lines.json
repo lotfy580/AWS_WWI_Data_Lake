@@ -1,0 +1,133 @@
+{
+    "data_location": "s3://devwwidatalakehouse/wwi_landing/wwi_cdc.sales.invoicelines",
+    "iceberg_raw_table": "wwi_raw.invoice_lines",
+    "iceberg_validated_table": "wwi_validated.invoice_lines",
+    "DQ_output_location": "s3://devwwidatalakehouse/Deequ_checks",
+    "id_cols": [
+        "invoiceLine_id"
+    ],
+    "columns_mapping": [
+        {
+            "source_column_name": "invoicelineid",
+            "target_column_name": "invoiceLine_id",
+            "data_type": "int",
+            "nullable": "false"
+        },
+        {
+            "source_column_name": "invoiceid",
+            "target_column_name": "invoice_id",
+            "data_type": "int",
+            "nullable": "false"
+        },
+        {
+            "source_column_name": "stockitemid",
+            "target_column_name": "stockItem_id",
+            "data_type": "int",
+            "nullable": "false"
+        },
+        {
+            "source_column_name": "description",
+            "target_column_name": "description",
+            "data_type": "string",
+            "nullable": "false"
+        },
+        {
+            "source_column_name": "packagetypeid",
+            "target_column_name": "package_type_id",
+            "data_type": "int",
+            "nullable": "false"
+        },
+        {
+            "source_column_name": "quantity",
+            "target_column_name": "quantity",
+            "data_type": "int",
+            "nullable": "false"
+        },
+        {
+            "source_column_name": "unitprice",
+            "target_column_name": "unit_price",
+            "data_type": "decimal(18, 3)",
+            "nullable": "true"
+        },
+        {
+            "source_column_name": "taxrate",
+            "target_column_name": "tax_rate",
+            "data_type": "decimal(18, 3)",
+            "nullable": "false"
+        },
+        {
+            "source_column_name": "taxamount",
+            "target_column_name": "tax_amount",
+            "data_type": "decimal(18, 3)",
+            "nullable": "false"
+        },
+        {
+            "source_column_name": "lineprofit",
+            "target_column_name": "line_profit",
+            "data_type": "decimal(18, 3)",
+            "nullable": "false"
+        },
+        {
+            "source_column_name": "extendedprice",
+            "target_column_name": "extended_price",
+            "data_type": "decimal(18, 3)",
+            "nullable": "false"
+        },
+        {
+            "source_column_name": "lasteditedby",
+            "target_column_name": "last_edited_by",
+            "data_type": "int",
+            "nullable": "false"
+        },
+        {
+            "source_column_name": "lasteditedwhen",
+            "target_column_name": "last_edited_when",
+            "data_type": "timestamp",
+            "nullable": "false"
+        }
+    ],
+    "quality_checks": [
+        {
+            "column": "invoiceLine_id",
+            "type": "is_unique",
+            "assertion": "none",
+            "status": "error"
+        },
+        {
+            "column": "invoice_id",
+            "type": "is_complete",
+            "assertion": "none",
+            "status": "error"
+        },
+        {
+            "column": "stockItem_id",
+            "type": "is_complete",
+            "assertion": "none",
+            "status": "error"
+        },
+        {
+            "column": "description",
+            "type": "is_complete",
+            "assertion": "none",
+            "status": "warning"
+        },
+        {
+            "column": "package_type_id",
+            "type": "is_complete",
+            "assertion": "none",
+            "status": "warning"
+        },
+        {
+            "column": "quantity",
+            "type": "has_max",
+            "assertion": "lambda x: x <= 1000",
+            "status": "error"
+        },
+        {
+            "column": "unit_price",
+            "type": "has_max",
+            "assertion": "lambda x: x <= 2000",
+            "status": "warning"
+        }
+    ]
+}

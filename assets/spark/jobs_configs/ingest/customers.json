@@ -1,0 +1,211 @@
+{
+    "data_location": "s3://devwwidatalakehouse/wwi_landing/wwi_cdc.sales.customers",
+    "iceberg_raw_table": "wwi_raw.customers",
+    "iceberg_validated_table": "wwi_validated.customers",
+    "DQ_output_location": "s3://devwwidatalakehouse/Deequ_checks",
+    "id_cols": [
+        "customer_id"
+    ],
+    "columns_mapping": [
+        {
+            "source_column_name": "customerid",
+            "target_column_name": "customer_id",
+            "data_type": "int",
+            "nullable": "false"
+        },
+        {
+            "source_column_name": "customername",
+            "target_column_name": "customer_name",
+            "data_type": "string",
+            "nullable": "false"
+        },
+        {
+            "source_column_name": "billtocustomerid",
+            "target_column_name": "bill_to_customer_id",
+            "data_type": "int",
+            "nullable": "false"
+        },
+        {
+            "source_column_name": "customercategoryid",
+            "target_column_name": "customer_category_id",
+            "data_type": "int",
+            "nullable": "false"
+        },
+        {
+            "source_column_name": "buyinggroupid",
+            "target_column_name": "buying_group_id",
+            "data_type": "int",
+            "nullable": "true"
+        },
+        {
+            "source_column_name": "primarycontactpersonid",
+            "target_column_name": "primary_contact_person_id",
+            "data_type": "int",
+            "nullable": "false"
+        },
+        {
+            "source_column_name": "alternatecontactpersonid",
+            "target_column_name": "alternate_contact_person_id",
+            "data_type": "int",
+            "nullable": "true"
+        },
+        {
+            "source_column_name": "deliverymethodid",
+            "target_column_name": "delivery_method_id",
+            "data_type": "int",
+            "nullable": "false"
+        },
+        {
+            "source_column_name": "deliverycityid",
+            "target_column_name": "delivery_city_id",
+            "data_type": "int",
+            "nullable": "false"
+        },
+        {
+            "source_column_name": "postalcityid",
+            "target_column_name": "postal_city_id",
+            "data_type": "int",
+            "nullable": "false"
+        },
+        {
+            "source_column_name": "creditlimit",
+            "target_column_name": "credit_limit",
+            "data_type": "decimal(18, 3)",
+            "nullable": "true"
+        },
+        {
+            "source_column_name": "accountopeneddate",
+            "target_column_name": "accountOpened_date",
+            "data_type": "date",
+            "nullable": "false"
+        },
+        {
+            "source_column_name": "standarddiscountpercentage",
+            "target_column_name": "standard_discount_percentage",
+            "data_type": "decimal(18, 3)",
+            "nullable": "false"
+        },
+        {
+            "source_column_name": "isstatementsent",
+            "target_column_name": "is_statement_sent",
+            "data_type": "boolean",
+            "nullable": "false"
+        },
+        {
+            "source_column_name": "isoncredithold",
+            "target_column_name": "is_on_credit_hold",
+            "data_type": "boolean",
+            "nullable": "false"
+        },
+        {
+            "source_column_name": "paymentdays",
+            "target_column_name": "payment_days",
+            "data_type": "int",
+            "nullable": "false"
+        },
+        {
+            "source_column_name": "phonenumber",
+            "target_column_name": "phone_number",
+            "data_type": "string",
+            "nullable": "false"
+        },
+        {
+            "source_column_name": "faxnumber",
+            "target_column_name": "fax_number",
+            "data_type": "string",
+            "nullable": "false"
+        },
+        {
+            "source_column_name": "deliveryrun",
+            "target_column_name": "delivery_run",
+            "data_type": "string",
+            "nullable": "true"
+        },
+        {
+            "source_column_name": "runposition",
+            "target_column_name": "run_position",
+            "data_type": "string",
+            "nullable": "true"
+        },
+        {
+            "source_column_name": "websiteurl",
+            "target_column_name": "website_url",
+            "data_type": "string",
+            "nullable": "false"
+        },
+        {
+            "source_column_name": "deliveryaddressline1",
+            "target_column_name": "delivery_address_line1",
+            "data_type": "string",
+            "nullable": "false"
+        },
+        {
+            "source_column_name": "deliveryaddressline2",
+            "target_column_name": "delivery_address_line2",
+            "data_type": "string",
+            "nullable": "true"
+        },
+        {
+            "source_column_name": "deliverypostalcode",
+            "target_column_name": "delivery_postal_code",
+            "data_type": "string",
+            "nullable": "false"
+        },
+        {
+            "source_column_name": "deliverylocation",
+            "target_column_name": "delivery_location",
+            "data_type": "string",
+            "nullable": "true"
+        },
+        {
+            "source_column_name": "postaladdressline1",
+            "target_column_name": "postal_address_line1",
+            "data_type": "string",
+            "nullable": "false"
+        },
+        {
+            "source_column_name": "postaladdressline2",
+            "target_column_name": "postal_address_line2",
+            "data_type": "string",
+            "nullable": "true"
+        },
+        {
+            "source_column_name": "postalpostalcode",
+            "target_column_name": "postal_postal_code",
+            "data_type": "string",
+            "nullable": "false"
+        },
+        {
+            "source_column_name": "lasteditedby",
+            "target_column_name": "last_edited_by",
+            "data_type": "int",
+            "nullable": "false"
+        },
+        {
+            "source_column_name": "validfrom",
+            "target_column_name": "valid_from",
+            "data_type": "timestamp",
+            "nullable": "false"
+        },
+        {
+            "source_column_name": "validto",
+            "target_column_name": "valid_to",
+            "data_type": "timestamp",
+            "nullable": "false"
+        }
+    ],
+    "quality_checks": [
+        {
+            "column": "customer_id",
+            "type": "is_unique",
+            "assertion": "none",
+            "status": "error"
+        },
+        {
+            "column": "customer_name",
+            "type": "is_name",
+            "assertion": "none",
+            "status": "warning"
+        }
+    ]
+}

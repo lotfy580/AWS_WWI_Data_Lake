@@ -1,0 +1,105 @@
+{
+    "dimension_table": "wwi_dwh.dim_supplier",
+    "DQ_output_URL": "s3://devwwidatalakehouse/Deequ_checks/DWH/dim_supplier",
+    "surrogate_key": "supplier_key",
+    "natural_keys": ["supplier_id"],
+    "source_tables" : [
+        "wwi_validated.suppliers", "wwi_validated.supplier_categories", "wwi_validated.people"
+    ],
+    "joins": [
+        {
+            "with": "wwi_validated.supplier_categories",
+            "alias": "supplier_categories",
+            "broadcast":"false",
+            "join_condition":"suppliers.supplier_category_id = supplier_categories.supplier_category_id",
+            "join_type": "left"
+        },
+        {
+            "with": "wwi_validated.people",
+            "alias": "people",
+            "broadcast":"false",
+            "join_condition":"suppliers.primary_contact_person_id = people.person_id",
+            "join_type": "left"
+        }
+    ],
+    "filter": "none",
+    "columns": [
+        {
+            "name": "supplier_id",
+            "source": "suppliers.supplier_id",
+            "datatype": "int",
+            "transform": "none",
+            "scd_type": "0"
+        },
+        {
+            "name": "supplier",
+            "source": "suppliers.supplier_name",
+            "datatype": "string",
+            "transform": "none",
+            "scd_type": "1"
+        },
+        {
+            "name": "category",
+            "source": "supplier_categories.supplier_category_name",
+            "datatype": "string",
+            "transform": "none",
+            "scd_type": "2"
+        },
+        {
+            "name": "primary_contact",
+            "source": "people.full_name",
+            "datatype": "string",
+            "transform": "none",
+            "scd_type": "2"
+        },
+        {
+            "name": "supplier_reference",
+            "source": "suppliers.supplier_reference",
+            "datatype": "string",
+            "transform": "none",
+            "scd_type": "2"
+        },
+        {
+            "name": "payment_days",
+            "source": "suppliers.payment_days",
+            "datatype": "int",
+            "transform": "none",
+            "scd_type": "1"
+        },
+        {
+            "name": "postal_code",
+            "source": "suppliers.delivery_postal_code",
+            "datatype": "string",
+            "transform": "none",
+            "scd_type": "1"
+        }
+    ],
+    "quality_checks": [
+        {
+            "column": "supplier_id",
+            "type": "is_complete",
+            "assertion": "none",
+            "status": "error"
+        },
+        {
+            "column": "supplier",
+            "type": "is_name",
+            "assertion": "none",
+            "status": "warning"
+        },
+        {
+            "column": "category",
+            "type": "is_contained_in",
+            "assertion": ["Other Wholesaler", "Novelty Goods Supplier", "Toy Supplier", "Clothing Supplier", "Packaging Supplier", "Courier Services Supplier", "Financial Services Supplier", "Marketing Services Supplier", "Insurance Services Supplier"],
+            "status": "warning"
+        },
+        {
+            "column": "primary_contact",
+            "type": "is_name",
+            "assertion": "none",
+            "status": "warning"
+        }
+    
+    ]
+    
+}

@@ -1,0 +1,175 @@
+{
+    "data_location": "s3://devwwidatalakehouse/wwi_landing/wwi_cdc.sales.invoices",
+    "iceberg_raw_table": "wwi_raw.invoices",
+    "iceberg_validated_table": "wwi_validated.invoices",
+    "DQ_output_location": "s3://devwwidatalakehouse/Deequ_checks",
+    "id_cols": [
+        "invoice_id"
+    ],
+    "columns_mapping": [
+        {
+            "source_column_name": "invoiceid",
+            "target_column_name": "invoice_id",
+            "data_type": "int",
+            "nullable": "false"
+        },
+        {
+            "source_column_name": "customerid",
+            "target_column_name": "customer_id",
+            "data_type": "int",
+            "nullable": "false"
+        },
+        {
+            "source_column_name": "billtocustomerid",
+            "target_column_name": "billTo_customer_id",
+            "data_type": "int",
+            "nullable": "false"
+        },
+        {
+            "source_column_name": "orderid",
+            "target_column_name": "order_id",
+            "data_type": "int",
+            "nullable": "true"
+        },
+        {
+            "source_column_name": "deliverymethodid",
+            "target_column_name": "delivery_method_id",
+            "data_type": "int",
+            "nullable": "false"
+        },
+        {
+            "source_column_name": "contactpersonid",
+            "target_column_name": "contact_person_id",
+            "data_type": "int",
+            "nullable": "false"
+        },
+        {
+            "source_column_name": "accountspersonid",
+            "target_column_name": "accounts_person_id",
+            "data_type": "int",
+            "nullable": "false"
+        },
+        {
+            "source_column_name": "salespersonpersonid",
+            "target_column_name": "salesperson_person_id",
+            "data_type": "int",
+            "nullable": "false"
+        },
+        {
+            "source_column_name": "packedbypersonid",
+            "target_column_name": "packed_by_person_id",
+            "data_type": "int",
+            "nullable": "false"
+        },
+        {
+            "source_column_name": "invoicedate",
+            "target_column_name": "invoice_date",
+            "data_type": "date",
+            "nullable": "false"
+        },
+        {
+            "source_column_name": "customerpurchaseordernumber",
+            "target_column_name": "customer_purchase_order_number",
+            "data_type": "string",
+            "nullable": "true"
+        },
+        {
+            "source_column_name": "iscreditnote",
+            "target_column_name": "is_credit_note",
+            "data_type": "boolean",
+            "nullable": "false"
+        },
+        {
+            "source_column_name": "creditnotereason",
+            "target_column_name": "credit_note_reason",
+            "data_type": "string",
+            "nullable": "true"
+        },
+        {
+            "source_column_name": "comments",
+            "target_column_name": "comments",
+            "data_type": "string",
+            "nullable": "true"
+        },
+        {
+            "source_column_name": "deliveryinstructions",
+            "target_column_name": "delivery_instructions",
+            "data_type": "string",
+            "nullable": "true"
+        },
+        {
+            "source_column_name": "internalcomments",
+            "target_column_name": "internal_comments",
+            "data_type": "string",
+            "nullable": "true"
+        },
+        {
+            "source_column_name": "totaldryitems",
+            "target_column_name": "total_dry_items",
+            "data_type": "int",
+            "nullable": "false"
+        },
+        {
+            "source_column_name": "totalchilleritems",
+            "target_column_name": "total_chiller_items",
+            "data_type": "int",
+            "nullable": "false"
+        },
+        {
+            "source_column_name": "deliveryrun",
+            "target_column_name": "delivery_run",
+            "data_type": "string",
+            "nullable": "true"
+        },
+        {
+            "source_column_name": "runposition",
+            "target_column_name": "run_position",
+            "data_type": "string",
+            "nullable": "true"
+        },
+        {
+            "source_column_name": "returneddeliverydata",
+            "target_column_name": "returned_delivery_data",
+            "data_type": "string",
+            "nullable": "true"
+        },
+        {
+            "source_column_name": "confirmeddeliverytime",
+            "target_column_name": "confirmed_delivery_time",
+            "data_type": "timestamp",
+            "nullable": "true"
+        },
+        {
+            "source_column_name": "confirmedreceivedby",
+            "target_column_name": "confirmed_received_by",
+            "data_type": "string",
+            "nullable": "true"
+        },
+        {
+            "source_column_name": "lasteditedby",
+            "target_column_name": "last_edited_by",
+            "data_type": "int",
+            "nullable": "false"
+        },
+        {
+            "source_column_name": "lasteditedwhen",
+            "target_column_name": "last_edited_when",
+            "data_type": "timestamp",
+            "nullable": "false"
+        }
+    ],
+    "quality_checks": [
+        {
+            "column": "invoice_id",
+            "type": "is_unique",
+            "assertion": "none",
+            "status": "error"
+        },
+        {
+            "column": "customer_id",
+            "type": "is_complete",
+            "assertion": "none",
+            "status": "error"
+        }
+    ]
+}

@@ -1,0 +1,55 @@
+{
+    "data_location": "s3://devwwidatalakehouse/wwi_landing/wwi_cdc.warehouse.colors",
+    "iceberg_raw_table": "wwi_raw.colors",
+    "iceberg_validated_table": "wwi_validated.colors",
+    "DQ_output_location": "s3://devwwidatalakehouse/Deequ_checks",
+    "id_cols": [
+        "color_id"
+    ],
+    "columns_mapping": [
+        {
+            "source_column_name": "colorid",
+            "target_column_name": "color_id",
+            "data_type": "int",
+            "nullable": "false"
+        },
+        {
+            "source_column_name": "colorname",
+            "target_column_name": "color_name",
+            "data_type": "string",
+            "nullable": "false"
+        },
+        {
+            "source_column_name": "lasteditedby",
+            "target_column_name": "last_edited_by",
+            "data_type": "int",
+            "nullable": "false"
+        },
+        {
+            "source_column_name": "validfrom",
+            "target_column_name": "valid_from",
+            "data_type": "timestamp",
+            "nullable": "false"
+        },
+        {
+            "source_column_name": "validto",
+            "target_column_name": "valid_to",
+            "data_type": "timestamp",
+            "nullable": "false"
+        }
+    ],
+    "quality_checks": [
+        {
+            "column": "color_id",
+            "type": "is_unique",
+            "assertion": "none",
+            "status": "error"
+        },
+        {
+            "column": "color_name",
+            "type": "is_name",
+            "assertion": "none",
+            "status": "warning"
+        }
+    ]
+}

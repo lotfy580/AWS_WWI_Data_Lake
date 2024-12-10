@@ -1,0 +1,136 @@
+{
+    "dimension_table": "wwi_dwh.dim_customer",
+    "DQ_output_URL": "s3://devwwidatalakehouse/Deequ_checks/DWH/dim_customer",
+    "surrogate_key": "customer_key",
+    "natural_keys": ["customer_id"],
+    "source_tables" : [
+        "wwi_validated.customers", "wwi_validated.buying_groups", "wwi_validated.customer_categories", "wwi_validated.people"
+    ],
+    "joins": [
+        {
+            "with": "wwi_validated.buying_groups",
+            "alias": "buying_groups",
+            "broadcast":"false",
+            "join_condition":"customers.buying_group_id = buying_groups.buying_group_id",
+            "join_type": "left"
+        },
+        {
+            "with": "wwi_validated.customers",
+            "alias": "customers2",
+            "broadcast":"false",
+            "join_condition":"customers.bill_to_customer_id = customers2.customer_id",
+            "join_type": "left"
+        },
+        {
+            "with": "wwi_validated.people",
+            "alias": "people",
+            "broadcast":"false",
+            "join_condition":"customers.primary_contact_person_id = people.person_id",
+            "join_type": "left"
+        },
+        {
+            "with": "wwi_validated.customer_categories",
+            "alias": "customer_categories",
+            "broadcast":"false",
+            "join_condition":"customers.customer_category_id = customer_categories.customer_category_id",
+            "join_type": "left"
+        }
+    ],
+    "filter": "none",
+    "columns": [
+        {
+            "name": "customer_id",
+            "source": "customers.customer_id",
+            "datatype": "int",
+            "transform": "none",
+            "scd_type": "0"
+        },
+        {
+            "name": "customer",
+            "source": "customers.customer_name",
+            "datatype": "string",
+            "transform": "none",
+            "scd_type": "1"
+        },
+        {
+            "name": "bill_to_customer",
+            "source": "customers2.customer_name",
+            "datatype": "string",
+            "transform": "none",
+            "scd_type": "2"
+        },
+        {
+            "name": "category",
+            "source": "customer_categories.customer_category_name",
+            "datatype": "string",
+            "transform": "none",
+            "scd_type": "2"
+        },
+        {
+            "name": "buying_group",
+            "source": "buying_groups.buying_group_name",
+            "datatype": "string",
+            "transform": "none",
+            "scd_type": "1"
+        },
+        {
+            "name": "primary_contact",
+            "source": "people.full_name",
+            "datatype": "string",
+            "transform": "none",
+            "scd_type": "2"
+        },
+        {
+            "name": "postal_code",
+            "source": "customers.postal_postal_code",
+            "datatype": "string",
+            "transform": "none",
+            "scd_type": "2"
+        }
+    ],
+    "quality_checks": [
+        {
+            "column": "customer_id",
+            "type": "is_complete",
+            "assertion": "none",
+            "status": "error"
+        },
+        {
+            "column": "customer",
+            "type": "is_name",
+            "assertion": "none",
+            "status": "warning"
+        },
+        {
+            "column": "bill_to_customer",
+            "type": "is_complete",
+            "assertion": "none",
+            "status": "error"
+        },
+        {
+            "column": "category",
+            "type": "is_name",
+            "assertion": "none",
+            "status": "warning"
+        },
+        {
+            "column": "primary_contact",
+            "type": "is_complete",
+            "assertion": "none",
+            "status": "error"
+        },
+        {
+            "column": "primary_contact",
+            "type": "is_name",
+            "assertion": "none",
+            "status": "warning"
+        },
+        {
+            "column": "postal_code",
+            "type": "has_max_length",
+            "assertion": "lambda x: x==6",
+            "status": "warning"
+        }
+    ]
+    
+}

@@ -1,0 +1,61 @@
+{
+  "rules": [
+    {
+      "rule-type": "selection",
+      "rule-id": "1",
+      "rule-name": "select-schemas",
+      "object-locator": {
+        "schema-name": "%",
+        "table-name": "%"
+      },
+      "rule-action": "include"
+    },
+    {
+      "rule-type": "transformation",
+      "rule-id": "2",
+      "rule-name": "convert-schemas-to-lower",
+      "rule-action": "convert-lowercase",
+      "rule-target": "schema",
+      "object-locator": {
+        "schema-name": "%"
+      }
+    },
+    {
+      "rule-type": "transformation",
+      "rule-id": "3",
+      "rule-name": "convert-tables-to-lower",
+      "rule-action": "convert-lowercase",
+      "rule-target": "table",
+      "object-locator": {
+        "schema-name": "%",
+        "table-name": "%"
+      }
+    },
+    {
+      "rule-type": "transformation",
+      "rule-id": "4",
+      "rule-name": "convert-columns-to-lowercase",
+      "rule-action": "convert-lowercase",
+      "rule-target": "column",
+      "object-locator": {
+        "schema-name": "%",
+        "table-name": "%",
+        "column-name": "%"
+      }
+    },
+    {
+      "rule-type": "transformation",
+      "rule-id": "5",
+      "rule-name": "5",
+      "rule-target": "column",
+      "object-locator": {
+          "schema-name": "%",
+          "table-name": "%",
+          "column-name": "diagnosticinterpretationrequestdata_diagnosticinterpretationcode"
+      },
+      "rule-action": "rename",
+      "value": "diagnosticinterpretationrequestdata_diagnosticinterpretationcod",
+      "old-value": null
+  }
+  ]
+}

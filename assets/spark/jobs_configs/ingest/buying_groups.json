@@ -1,0 +1,67 @@
+{
+    "data_location": "s3://devwwidatalakehouse/wwi_landing/wwi_cdc.sales.buyinggroups",
+    "iceberg_raw_table": "wwi_raw.buying_groups",
+    "iceberg_validated_table": "wwi_validated.buying_groups",
+    "DQ_output_location":"s3://devwwidatalakehouse/Deequ_checks",
+    "id_cols": [
+        "buying_group_id"
+    ],
+    "columns_mapping": [
+        {
+            "source_column_name": "buyinggroupid",
+            "target_column_name": "buying_group_id",
+            "data_type": "int",
+            "nullable": "false"
+        },
+        {
+            "source_column_name": "buyinggroupname",
+            "target_column_name": "buying_group_name",
+            "data_type": "string",
+            "nullable": "false"
+        },
+        {
+            "source_column_name": "lasteditedby",
+            "target_column_name": "last_edited_by",
+            "data_type": "int",
+            "nullable": "false"
+        },
+        {
+            "source_column_name": "validfrom",
+            "target_column_name": "valid_from",
+            "data_type": "timestamp",
+            "nullable": "false"
+        },
+        {
+            "source_column_name": "validto",
+            "target_column_name": "valid_to",
+            "data_type": "timestamp",
+            "nullable": "false"
+        }
+    ],
+    "quality_checks": [
+        {
+            "column": "buying_group_id",
+            "type": "is_complete",
+            "assertion": "none",
+            "status": "error"
+        },
+        {
+            "column": "buying_group_id",
+            "type": "is_unique",
+            "assertion": "none",
+            "status": "error"
+        },
+        {
+            "column": "buying_group_name",
+            "type": "is_complete",
+            "assertion": "none",
+            "status": "error"
+        },
+        {
+            "column": "buying_group_name",
+            "type": "is_name",
+            "assertion": "none",
+            "status": "warning"
+        }
+    ]
+}

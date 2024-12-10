@@ -1,0 +1,17 @@
+# Description: pull confluent schema regisrty docker image from docker hub and download IAM jar to enable\
+#              IAM authentication mechanism to connect to MSK cluster
+# Author: Lotfy Ashmawy 
+
+FROM confluentinc/cp-schema-registry:latest
+
+USER root
+
+RUN wget -P /usr/share/java/cp-base-new \
+    https://github.com/aws/aws-msk-iam-auth/releases/download/v2.2.0/aws-msk-iam-auth-2.2.0-all.jar && \
+    chmod 444 /usr/share/java/cp-base-new/aws-msk-iam-auth-2.2.0-all.jar
+
+RUN cp /usr/share/java/cp-base-new/aws-msk-iam-auth-2.2.0-all.jar /usr/share/java/rest-utils/
+
+USER appuser
+
+CMD ["bash", "-c", "exec /etc/confluent/docker/run"]

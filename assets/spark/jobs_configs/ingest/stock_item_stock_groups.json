@@ -1,0 +1,61 @@
+{
+    "data_location": "s3://devwwidatalakehouse/wwi_landing/wwi_cdc.warehouse.stockitemstockgroups",
+    "iceberg_raw_table": "wwi_raw.stock_item_stock_groups",
+    "iceberg_validated_table": "wwi_validated.stock_item_stock_groups",
+    "DQ_output_location": "s3://devwwidatalakehouse/Deequ_checks",
+    "id_cols": [
+        "stock_item_stock_group_id"
+    ],
+    "columns_mapping": [
+        {
+            "source_column_name": "stockitemstockgroupid",
+            "target_column_name": "stock_item_stock_group_id",
+            "data_type": "int",
+            "nullable": "false"
+        },
+        {
+            "source_column_name": "stockitemid",
+            "target_column_name": "stock_item_id",
+            "data_type": "int",
+            "nullable": "false"
+        },
+        {
+            "source_column_name": "stockgroupid",
+            "target_column_name": "stock_group_id",
+            "data_type": "int",
+            "nullable": "false"
+        },
+        {
+            "source_column_name": "lasteditedby",
+            "target_column_name": "last_edited_by",
+            "data_type": "int",
+            "nullable": "false"
+        },
+        {
+            "source_column_name": "lasteditedwhen",
+            "target_column_name": "last_edited_when",
+            "data_type": "timestamp",
+            "nullable": "true"
+        }
+    ],
+    "quality_checks": [
+        {
+            "column": "stock_item_stock_group_id",
+            "type": "is_unique",
+            "assertion": "none",
+            "status": "error"
+        },
+        {
+            "column": "stock_item_id",
+            "type": "is_complete",
+            "assertion": "none",
+            "status": "error"
+        },
+        {
+            "column": "stock_group_id",
+            "type": "is_complete",
+            "assertion": "none",
+            "status": "error"
+        }
+    ]
+}

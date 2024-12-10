@@ -1,0 +1,167 @@
+{
+    "dimension_table": "wwi_dwh.dim_city",
+    "DQ_output_URL": "s3://devwwidatalakehouse/Deequ_checks/DWH/dim_city",
+    "surrogate_key": "city_key",
+    "natural_keys": ["city_id"],
+    "source_tables" : [
+        "wwi_validated.cities", "wwi_validated.state_provinces", "wwi_validated.countries"
+    ],
+    "joins": [
+        {
+            "with": "wwi_validated.state_provinces",
+            "alias": "state_provinces",
+            "broadcast":"false",
+            "join_condition":"cities.stateprovince_id = state_provinces.state_provinces_id",
+            "join_type": "left"
+        },
+        {
+            "with": "wwi_validated.countries",
+            "alias": "countries",
+            "broadcast":"false",
+            "join_condition":"state_provinces.country_id = countries.country_id",
+            "join_type": "left"
+        }
+    ],
+    "filter": "none",
+    "columns": [
+        {
+            "name": "city_id",
+            "source": "cities.city_id",
+            "datatype": "int",
+            "transform": "none",
+            "scd_type": "0"
+        },
+        {
+            "name": "city",
+            "source": "cities.city_name",
+            "datatype": "string",
+            "transform": "none",
+            "scd_type": "1"
+        },
+        {
+            "name": "state_province",
+            "source": "state_provinces.state_province_name",
+            "datatype": "string",
+            "transform": "none",
+            "scd_type": "1"
+        },
+        {
+            "name": "country",
+            "source": "countries.country_name",
+            "datatype": "string",
+            "transform": "none",
+            "scd_type": "1"
+        },
+        {
+            "name": "continent",
+            "source": "countries.continent",
+            "datatype": "string",
+            "transform": "none",
+            "scd_type": "1"
+        },
+        {
+            "name": "sales_territory",
+            "source": "state_provinces.sales_territory",
+            "datatype": "string",
+            "transform": "none",
+            "scd_type": "1"
+        },
+        {
+            "name": "region",
+            "source": "countries.region",
+            "datatype": "string",
+            "transform": "none",
+            "scd_type": "1"
+        },
+        {
+            "name": "subregion",
+            "source": "countries.subregion",
+            "datatype": "string",
+            "transform": "none",
+            "scd_type": "1"
+        },
+        {
+            "name": "location",
+            "source": "cities.location",
+            "datatype": "string",
+            "transform": "none",
+            "scd_type": "1"
+        },
+        {
+            "name": "latest_recorded_population",
+            "source": "cities.latest_recorded_population",
+            "datatype": "bigint",
+            "transform": "none",
+            "scd_type": "1"
+        }
+    ],
+    "quality_checks": [
+        {
+            "column": "city_id",
+            "type": "is_complete",
+            "assertion": "none",
+            "status": "error"
+        },
+        {
+            "column": "city",
+            "type": "is_name",
+            "assertion": "none",
+            "status": "warning"
+        },
+        {
+            "column": "city",
+            "type": "has_max_length",
+            "assertion": "lambda x: x < 200",
+            "status": "error"
+        },
+        {
+            "column": "state_province",
+            "type": "is_name",
+            "assertion": "none",
+            "status": "warning"
+        },
+        {
+            "column": "state_province",
+            "type": "is_complete",
+            "assertion": "none",
+            "status": "error"
+        },
+        {
+            "column": "country",
+            "type": "is_complete",
+            "assertion": "none",
+            "status": "error"
+        },
+        {
+            "column": "country",
+            "type": "is_name",
+            "assertion": "none",
+            "status": "warning"
+        },
+        {
+            "column": "continent",
+            "type": "is_contained_in",
+            "assertion": ["Africa", "Asia", "Europe", "North America", "Oceania", "Seven seas (open ocean)", "South America"],
+            "status": "warning"
+        },
+        {
+            "column": "sales_territory",
+            "type": "is_complete",
+            "assertion": "none",
+            "status": "warning"
+        },
+        {
+            "column": "region",
+            "type": "is_complete",
+            "assertion": "none",
+            "status": "warning"
+        },
+        {
+            "column": "subregion",
+            "type": "is_complete",
+            "assertion": "none",
+            "status": "warning"
+        }
+    ]
+    
+}

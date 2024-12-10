@@ -1,0 +1,111 @@
+{
+    "fact_table": "wwi_dwh.fact_purchase",
+    "DQ_output_URL": "s3://devwwidatalakehouse/Deequ_checks/DWH/fact_purchase",
+    "surrogate_key": "purchase_key",
+    "natural_keys": ["date_key", "supplier_key", "stock_item_key", "stock_item_key", "purchase_order_id "],
+    "source_tables" : [
+        "wwi_validated.purchase_order_lines", "wwi_validated.purchase_orders", "wwi_validated.package_types", "wwi_dwh.dim_supplier", "wwi_dwh.dim_stock_item"
+    ],
+    "joins": [
+        {
+            "with": "wwi_validated.purchase_orders",
+            "alias": "purchase_orders",
+            "broadcast":"false",
+            "join_condition":"purchase_order_lines.purchase_order_id = purchase_orders.purchase_order_id",
+            "join_type": "left"
+        },
+        {
+            "with": "wwi_validated.package_types",
+            "alias": "package_types",
+            "broadcast":"true",
+            "join_condition":"purchase_order_lines.package_type_id = package_types.package_type_id",
+            "join_type": "left"
+        },
+        {
+            "with": "wwi_dwh.dim_supplier",
+            "alias": "supplier",
+            "broadcast":"true",
+            "join_condition":"purchase_orders.supplier_id = supplier.supplier_id AND supplier.is_current = 1",
+            "join_type": "left"
+        },
+        {
+            "with": "wwi_dwh.dim_stock_item",
+            "alias": "stock_item",
+            "broadcast":"true",
+            "join_condition":"purchase_order_lines.stock_item_id = stock_item.stock_item_id AND stock_item.is_current = 1",
+            "join_type": "left"
+        }
+    ],
+    "filter": "none",
+    "columns": [
+        {
+            "name": "date_key",
+            "source": "purchase_orders.order_date",
+            "datatype": "date",
+            "transform": "none"
+        },
+        {
+            "name": "supplier_key",
+            "source": "supplier.supplier_key",
+            "datatype": "int",
+            "transform": "none"
+        },
+        {
+            "name": "stock_item_key",
+            "source": "stock_item.stock_item_key",
+            "datatype": "int",
+            "transform": "none"
+        },
+        {
+            "name": "purchase_order_id",
+            "source": "purchase_orders.purchase_order_id",
+            "datatype": "int",
+            "transform": "none"
+        },
+        {
+            "name": "ordered_outers",
+            "source": "purchase_order_lines.ordered_outers",
+            "datatype": "int",
+            "transform": "none"
+        },
+        {
+            "name": "ordered_quantity",
+            "source": "purchase_order_lines.ordered_outers",
+            "datatype": "int",
+            "transform": "none"
+        },
+        {
+            "name": "received_outers",
+            "source": "purchase_order_lines.received_outers",
+            "datatype": "int",
+            "transform": "none"
+        },
+        {
+            "name": "is_order_finalized",
+            "source": "purchase_order_lines.is_order_line_finalized",
+            "datatype": "boolean",
+            "transform": "none"
+        },
+        {
+            "name": "package",
+            "source": "package_types.package_type_name",
+            "datatype": "string",
+            "transform": "none"
+        }
+    ],
+    "quality_checks": [
+        {
+            "column": "ordered_outers",
+            "type": "has_min",
+            "assertion": "lambda x: x > 0",
+            "status": "error"
+        },
+        {
+            "column": "ordered_outers",
+            "type": "has_max",
+            "assertion": "lambda x: x < 4000",
+            "status": "error"
+        }
+    ]
+    
+}

@@ -1,0 +1,186 @@
+{
+    "dimension_table": "wwi_dwh.dim_stock_item",
+    "DQ_output_URL": "s3://devwwidatalakehouse/Deequ_checks/DWH/dim_stock_item",
+    "surrogate_key": "stock_item_key",
+    "natural_keys": ["stock_item_id"],
+    "source_tables" : [
+        "wwi_validated.stock_items", "wwi_validated.colors", "wwi_validated.package_types"
+    ],
+    "joins": [
+        {
+            "with": "wwi_validated.colors",
+            "alias": "colors",
+            "broadcast":"false",
+            "join_condition":"stock_items.color_id = colors.color_id",
+            "join_type": "left"
+        },
+        {
+            "with": "wwi_validated.package_types",
+            "alias": "package_type",
+            "broadcast":"false",
+            "join_condition":"stock_items.unit_package_id = package_type.package_type_id",
+            "join_type": "left"
+        },
+        {
+            "with": "wwi_validated.package_types",
+            "alias": "package_type2",
+            "broadcast":"false",
+            "join_condition":"stock_items.outer_package_id = package_type2.package_type_id",
+            "join_type": "left"
+        }
+    ],
+    "filter": "none",
+    "columns": [
+        {
+            "name": "stock_item_id",
+            "source": "stock_items.stock_item_id",
+            "datatype": "int",
+            "transform": "none",
+            "scd_type": "0"
+        },
+        {
+            "name": "stock_item",
+            "source": "stock_items.stock_item_name",
+            "datatype": "string",
+            "transform": "none",
+            "scd_type": "1"
+        },
+        {
+            "name": "color",
+            "source": "colors.color_name",
+            "datatype": "string",
+            "transform": "none",
+            "scd_type": "2"
+        },
+        {
+            "name": "selling_package",
+            "source": "package_type.package_type_name",
+            "datatype": "string",
+            "transform": "none",
+            "scd_type": "2"
+        },
+        {
+            "name": "buying_package",
+            "source": "package_type2.package_type_name",
+            "datatype": "string",
+            "transform": "none",
+            "scd_type": "2"
+        },
+        {
+            "name": "brand",
+            "source": "stock_items.brand",
+            "datatype": "string",
+            "transform": "none",
+            "scd_type": "1"
+        },
+        {
+            "name": "size",
+            "source": "stock_items.size",
+            "datatype": "string",
+            "transform": "none",
+            "scd_type": "2"
+        },
+        {
+            "name": "lead_time_days",
+            "source": "stock_items.lead_time_days",
+            "datatype": "int",
+            "transform": "none",
+            "scd_type": "1"
+        },
+        {
+            "name": "quantity_per_outer",
+            "source": "stock_items.quantity_perouter",
+            "datatype": "int",
+            "transform": "none",
+            "scd_type": "1"
+        },
+        {
+            "name": "is_chiller_stock",
+            "source": "stock_items.is_chiller_stock",
+            "datatype": "boolean",
+            "transform": "when(col('stock_items.is_chiller_stock') == 1, True).otherwise(False)",
+            "scd_type": "1"
+        },
+        {
+            "name": "barcode",
+            "source": "stock_items.barcode",
+            "datatype": "sting",
+            "transform": "none",
+            "scd_type": "0"
+        },
+        {
+            "name": "tax_rate",
+            "source": "stock_items.tax_rate",
+            "datatype": "decimal(18, 3)",
+            "transform": "none",
+            "scd_type": "1"
+        },
+        {
+            "name": "unit_price",
+            "source": "stock_items.unit_price",
+            "datatype": "decimal(18, 3)",
+            "transform": "none",
+            "scd_type": "2"
+        },
+        {
+            "name": "recommended_retail_price",
+            "source": "stock_items.recommended_retail_price",
+            "datatype": "decimal(18, 2)",
+            "transform": "none",
+            "scd_type": "1"
+        },
+        {
+            "name": "typical_weight_per_unit",
+            "source": "stock_items.typical_weight_per_unit",
+            "datatype": "decimal(18, 2)",
+            "transform": "none",
+            "scd_type": "1"
+        },
+        {
+            "name": "Photo",
+            "source": "stock_items.Photo",
+            "datatype": "binary",
+            "transform": "none",
+            "scd_type": "1"
+        }
+    ],
+    "quality_checks": [
+        {
+            "column": "stock_item_id",
+            "type": "is_complete",
+            "assertion": "none",
+            "status": "error"
+        },
+        {
+            "column": "stock_item",
+            "type": "is_name",
+            "assertion": "none",
+            "status": "warning"
+        },
+        {
+            "column": "color",
+            "type": "is_name",
+            "assertion": "none",
+            "status": "warning"
+        },
+        {
+            "column": "buying_package",
+            "type": "is_contained_in",
+            "assertion": ["Bag", "Block", "Bottle", "Box", "Can", "Carton", "Each", "Kg", "Packet", "Pair", "Pallet", "Tray", "Tub", "Tube"],
+            "status": "warning"
+        },
+        {
+            "column": "selling_package",
+            "type": "is_contained_in",
+            "assertion": ["Bag", "Block", "Bottle", "Box", "Can", "Carton", "Each", "Kg", "Packet", "Pair", "Pallet", "Tray", "Tub", "Tube"],
+            "status": "warning"
+        },
+        {
+            "column": "unit_price",
+            "type": "has_min",
+            "assertion": "lambda x: x>=0",
+            "status": "error"
+        }
+    ]
+    
+}

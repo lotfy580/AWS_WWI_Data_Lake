@@ -1,0 +1,211 @@
+{
+    "data_location": "s3://devwwidatalakehouse/wwi_landing/wwi_cdc.purchasing.suppliers",
+    "iceberg_raw_table": "wwi_raw.suppliers",
+    "iceberg_validated_table": "wwi_validated.suppliers",
+    "DQ_output_location": "s3://devwwidatalakehouse/Deequ_checks",
+    "id_cols": [
+        "supplier_id"
+    ],
+    "columns_mapping": [
+        {
+            "source_column_name": "supplierid",
+            "target_column_name": "supplier_id",
+            "data_type": "int",
+            "nullable": "false"
+        },
+        {
+            "source_column_name": "suppliername",
+            "target_column_name": "supplier_name",
+            "data_type": "string",
+            "nullable": "false"
+        },
+        {
+            "source_column_name": "suppliercategoryid",
+            "target_column_name": "supplier_category_id",
+            "data_type": "int",
+            "nullable": "false"
+        },
+        {
+            "source_column_name": "primarycontactpersonid",
+            "target_column_name": "primary_contact_person_id",
+            "data_type": "int",
+            "nullable": "false"
+        },
+        {
+            "source_column_name": "alternatecontactpersonid",
+            "target_column_name": "alternate_contact_person_id",
+            "data_type": "int",
+            "nullable": "false"
+        },
+        {
+            "source_column_name": "deliverymethodid",
+            "target_column_name": "delivery_method_id",
+            "data_type": "int",
+            "nullable": "true"
+        },
+        {
+            "source_column_name": "deliverycityid",
+            "target_column_name": "delivery_city_id",
+            "data_type": "int",
+            "nullable": "false"
+        },
+        {
+            "source_column_name": "postalcityid",
+            "target_column_name": "postal_city_id",
+            "data_type": "int",
+            "nullable": "false"
+        },
+        {
+            "source_column_name": "supplierreference",
+            "target_column_name": "supplier_reference",
+            "data_type": "string",
+            "nullable": "true"
+        },
+        {
+            "source_column_name": "bankaccountname",
+            "target_column_name": "bank_account_name",
+            "data_type": "string",
+            "nullable": "true"
+        },
+        {
+            "source_column_name": "bankaccountbranch",
+            "target_column_name": "bank_account_branch",
+            "data_type": "string",
+            "nullable": "true"
+        },
+        {
+            "source_column_name": "bankaccountcode",
+            "target_column_name": "bank_account_code",
+            "data_type": "string",
+            "nullable": "true"
+        },
+        {
+            "source_column_name": "bankaccountnumber",
+            "target_column_name": "bank_account_number",
+            "data_type": "string",
+            "nullable": "true"
+        },
+        {
+            "source_column_name": "bankinternationalcode",
+            "target_column_name": "bank_international_code",
+            "data_type": "string",
+            "nullable": "true"
+        },
+        {
+            "source_column_name": "paymentdays",
+            "target_column_name": "payment_days",
+            "data_type": "int",
+            "nullable": "false"
+        },
+        {
+            "source_column_name": "internalcomments",
+            "target_column_name": "internal_comments",
+            "data_type": "string",
+            "nullable": "true"
+        },
+        {
+            "source_column_name": "phonenumber",
+            "target_column_name": "phone_number",
+            "data_type": "string",
+            "nullable": "false"
+        },
+        {
+            "source_column_name": "faxnumber",
+            "target_column_name": "fax_number",
+            "data_type": "string",
+            "nullable": "false"
+        },
+        {
+            "source_column_name": "websiteurl",
+            "target_column_name": "website_url",
+            "data_type": "string",
+            "nullable": "false"
+        },
+        {
+            "source_column_name": "deliveryaddressline1",
+            "target_column_name": "delivery_address_line1",
+            "data_type": "string",
+            "nullable": "false"
+        },
+        {
+            "source_column_name": "deliveryaddressline2",
+            "target_column_name": "delivery_address_line2",
+            "data_type": "string",
+            "nullable": "true"
+        },
+        {
+            "source_column_name": "deliverypostalcode",
+            "target_column_name": "delivery_postal_code",
+            "data_type": "string",
+            "nullable": "false"
+        },
+        {
+            "source_column_name": "deliverylocation",
+            "target_column_name": "delivery_location",
+            "data_type": "string",
+            "nullable": "true"
+        },
+        {
+            "source_column_name": "postaladdressline1",
+            "target_column_name": "postal_address_line1",
+            "data_type": "string",
+            "nullable": "false"
+        },
+        {
+            "source_column_name": "postaladdressline2",
+            "target_column_name": "postal_address_line2",
+            "data_type": "string",
+            "nullable": "true"
+        },
+        {
+            "source_column_name": "postalpostalcode",
+            "target_column_name": "postal_postal_code",
+            "data_type": "string",
+            "nullable": "false"
+        },
+        {
+            "source_column_name": "lasteditedby",
+            "target_column_name": "last_edited_by",
+            "data_type": "int",
+            "nullable": "false"
+        },
+        {
+            "source_column_name": "validfrom",
+            "target_column_name": "valid_from",
+            "data_type": "timestamp",
+            "nullable": "false"
+        },
+        {
+            "source_column_name": "validto",
+            "target_column_name": "valid_to",
+            "data_type": "timestamp",
+            "nullable": "false"
+        }
+    ],
+    "quality_checks": [
+        {
+            "column": "supplier_id",
+            "type": "is_unique",
+            "assertion": "none",
+            "status": "error"
+        },
+        {
+            "column": "supplier_name",
+            "type": "is_name",
+            "assertion": "none",
+            "status": "warning"
+        },
+        {
+            "column": "supplier_category_id",
+            "type": "is_complete",
+            "assertion": "none",
+            "status": "error"
+        },
+        {
+            "column": "primary_contact_person_id",
+            "type": "is_complete",
+            "assertion": "none",
+            "status": "error"
+        }
+    ]
+}
