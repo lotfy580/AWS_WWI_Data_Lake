@@ -1,7 +1,7 @@
 locals {
   project               = "wwi"
   region                = "eu-west-1"
-  root_path             = abspath(path.root)
+  root_path             = "${abspath(path.root)}/.."
   s3_bucket_name        = "${var.env}wwidatalakehouse"
   glue_db_names         = toset(["wwi_raw", "wwi_transformed", "wwi_presentation"])
   postgres_rds_port     = 5432
